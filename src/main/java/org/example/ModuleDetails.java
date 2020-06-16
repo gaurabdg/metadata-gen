@@ -1,4 +1,5 @@
-import java.util.Collections;
+package org.example;
+
 import java.util.List;
 
 public class ModuleDetails {

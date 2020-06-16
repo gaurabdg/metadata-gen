@@ -1,15 +1,21 @@
+package org.example;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+import org.example.ModuleDetails;
+import org.example.XMLReader;
 import org.junit.jupiter.api.Test;
 
 public class XMLReaderTest {
     @Test
     public void testModuleDetails() throws Exception{
         XMLReader xr = new XMLReader();
-        ModuleDetails actualEmptyBlockDetails = xr.read("EmptyBlockCheck");
+        ModuleDetails actualEmptyBlockDetails = xr.read(new File(getClass().getClassLoader()
+                .getResource("EmptyBlockCheck.xml").getFile()));
         ModuleDetails emptyBlockCheck = new ModuleDetails();
         assertEquals("EmptyBlock", actualEmptyBlockDetails.getName(), "Name doesn't match");
         assertEquals("com.puppycrawl.tools.checkstyle.checks.blocks.EmptyBlockCheck",

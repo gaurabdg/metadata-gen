@@ -1,3 +1,5 @@
+package org.example;
+
 import java.io.File;
 
 import org.w3c.dom.Document;
@@ -14,16 +16,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class XMLReader {
-    public ModuleDetails read(String moduleName) throws ParserConfigurationException, IOException, SAXException {
-        File file = new File(getClass().getClassLoader()
-                .getResource(moduleName + ".xml").getFile());
+    public ModuleDetails read(File moduleMetadataFile) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document document = builder.parse(new File(String.valueOf(file)));
+        DocumentBuilder builder = null;
+        try {
+            builder = factory.newDocumentBuilder();
+        } catch (ParserConfigurationException ignored) {}
+        Document document = null;
+        try {
+            document = builder.parse(new File(String.valueOf(moduleMetadataFile)));
+        } catch (SAXException | IOException ignored) {}
         Element root = document.getDocumentElement();
         Element element = getDirectChildsByTag(root, "module").get(0);
         ModuleDetails result = null;
-        if (moduleName.contains("Check")) {
+        if (moduleMetadataFile.getName().contains("Check")) {
             result = createCheck(element);
         }
 //        else {
@@ -45,7 +51,7 @@ public class XMLReader {
     }
 
     public static List<ModulePropertyDetails> createProperties(Element properties) {
-        List<ModulePropertyDetails> result = new ArrayList<ModulePropertyDetails>();
+        List<ModulePropertyDetails> result = new ArrayList<>();
         NodeList propertyList = properties.getElementsByTagName("property");
         for (int i = 0;i < propertyList.getLength(); i++) {
             ModulePropertyDetails propertyDetails = new ModulePropertyDetails();
@@ -66,7 +72,7 @@ public class XMLReader {
                                                          String listOption, String attribute) {
         NodeList nodeList = getDirectChildsByTag(element, listParent).get(0)
                 .getElementsByTagName(listOption);
-        List<String> listContent = new ArrayList<String>();
+        List<String> listContent = new ArrayList<>();
         for (int j = 0;j < nodeList.getLength(); j++) {
             listContent.add(getAttributeValue((Element) nodeList.item(j), attribute));
         }
@@ -75,7 +81,7 @@ public class XMLReader {
 
     public static List<Element> getDirectChildsByTag(Element element, String sTagName) {
         NodeList children = element.getElementsByTagName(sTagName);
-        List<Element> res = new ArrayList<Element>();
+        List<Element> res = new ArrayList<>();
         for (int i = 0; i < children.getLength(); i++) {
             if (children.item(i).getParentNode().equals(element)) {
                 res.add((Element) children.item(i));
