@@ -12,11 +12,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class XMLReader {
-    public ModuleDetails read(File moduleMetadataFile) {
+    public ModuleDetails read(InputStream moduleMetadataStream, ModuleType moduleType) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;
         try {
@@ -24,12 +25,14 @@ public class XMLReader {
         } catch (ParserConfigurationException ignored) {}
         Document document = null;
         try {
-            document = builder.parse(new File(String.valueOf(moduleMetadataFile)));
-        } catch (SAXException | IOException ignored) {}
+            document = builder.parse(moduleMetadataStream);
+        } catch (SAXException | IOException ex) {
+            ex.printStackTrace();
+        }
         Element root = document.getDocumentElement();
         Element element = getDirectChildsByTag(root, "module").get(0);
         ModuleDetails result = null;
-        if (moduleMetadataFile.getName().contains("Check")) {
+        if (moduleType == ModuleType.CHECK) {
             result = createCheck(element);
         }
 //        else {

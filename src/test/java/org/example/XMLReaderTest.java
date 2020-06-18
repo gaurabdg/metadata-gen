@@ -14,8 +14,8 @@ public class XMLReaderTest {
     @Test
     public void testModuleDetails() throws Exception{
         XMLReader xr = new XMLReader();
-        ModuleDetails actualEmptyBlockDetails = xr.read(new File(getClass().getClassLoader()
-                .getResource("EmptyBlockCheck.xml").getFile()));
+        ModuleDetails actualEmptyBlockDetails = xr.read(getClass().getClassLoader()
+                .getResourceAsStream("EmptyBlockCheck.xml"), ModuleType.CHECK);
         ModuleDetails emptyBlockCheck = new ModuleDetails();
         assertEquals("EmptyBlock", actualEmptyBlockDetails.getName(), "Name doesn't match");
         assertEquals("com.puppycrawl.tools.checkstyle.checks.blocks.EmptyBlockCheck",
