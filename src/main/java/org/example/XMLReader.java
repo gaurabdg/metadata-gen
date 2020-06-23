@@ -48,7 +48,10 @@ public class XMLReader {
         check.setFullQualifiedName(getAttributeValue(mod, "fullyQualifiedName"));
         check.setParent(getAttributeValue(mod, "parent"));
         check.setDescription(getDirectChildsByTag(mod, "description").get(0).getFirstChild().getNodeValue());
-        check.setProperties(createProperties(getDirectChildsByTag(mod, "properties").get(0)));
+        List<ModulePropertyDetails> modulePropertyDetailsList =
+                createProperties(getDirectChildsByTag(mod, "properties").get(0));
+        check.setProperties(modulePropertyDetailsList);
+        check.setModulePropertyByKey(modulePropertyDetailsList);
         check.setViolationMessageKeys(getListContentByAttribute(mod, "message-keys", "message-key", "key"));
         return check;
     }
@@ -73,13 +76,17 @@ public class XMLReader {
 
     public static List<String> getListContentByAttribute(Element element, String listParent,
                                                          String listOption, String attribute) {
-        NodeList nodeList = getDirectChildsByTag(element, listParent).get(0)
-                .getElementsByTagName(listOption);
-        List<String> listContent = new ArrayList<>();
-        for (int j = 0;j < nodeList.getLength(); j++) {
-            listContent.add(getAttributeValue((Element) nodeList.item(j), attribute));
+        List<Element> children = getDirectChildsByTag(element, listParent);
+        List<String> result = null;
+        if (!children.isEmpty()) {
+            NodeList nodeList = children.get(0).getElementsByTagName(listOption);
+            List<String> listContent = new ArrayList<>();
+            for (int j = 0;j < nodeList.getLength(); j++) {
+                listContent.add(getAttributeValue((Element) nodeList.item(j), attribute));
+            }
+            result = listContent;
         }
-        return listContent;
+        return result;
     }
 
     public static List<Element> getDirectChildsByTag(Element element, String sTagName) {

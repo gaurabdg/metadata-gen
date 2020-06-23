@@ -1,6 +1,8 @@
 package org.example;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ModuleDetails {
     private String name;
@@ -8,6 +10,7 @@ public class ModuleDetails {
     private String parent;
     private String description;
     private List<ModulePropertyDetails> properties;
+    private final Map<String, ModulePropertyDetails> modulePropertyKeyMap = new HashMap<>();
     private List<String> violationMessageKeys;
 
     public String getName() {
@@ -56,5 +59,15 @@ public class ModuleDetails {
 
     public void setViolationMessageKeys(List<String> violationMessageKeys) {
         this.violationMessageKeys = violationMessageKeys;
+    }
+
+    public ModulePropertyDetails getModulePropertyByKey(String key) {
+        return modulePropertyKeyMap.get(key);
+    }
+
+    public void setModulePropertyByKey(List<ModulePropertyDetails> modulePropertyDetailsList) {
+        modulePropertyDetailsList.forEach(modulePropertyDetails -> {
+            modulePropertyKeyMap.put(modulePropertyDetails.getName(), modulePropertyDetails);
+        });
     }
 }
