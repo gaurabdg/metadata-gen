@@ -1,7 +1,5 @@
 package org.example;
 
-import java.io.File;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -16,7 +14,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class XMLReader {
+public class XMLMetaReader {
     public ModuleDetails read(InputStream moduleMetadataStream, ModuleType moduleType) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;
@@ -31,28 +29,29 @@ public class XMLReader {
         }
         Element root = document.getDocumentElement();
         Element element = getDirectChildsByTag(root, "module").get(0);
-        ModuleDetails result = null;
+        Element module = null;
         if (moduleType == ModuleType.CHECK) {
-            result = createCheck(element);
+            module = getDirectChildsByTag(element, "check").get(0);
         }
-//        else {
-//            result = createFilter(element);
-//        }
-        return result;
+        else if (moduleType == ModuleType.FILTER) {
+            module = getDirectChildsByTag(element, "filter").get(0);
+        }
+        else if (moduleType == ModuleType.FILEFILTER) {
+            module = getDirectChildsByTag(element, "filter").get(0);
+        }
+        return createModule(module);
     }
 
-    public static ModuleDetails createCheck(Element module) {
-        Element mod = getDirectChildsByTag(module, "check").get(0);
+    public static ModuleDetails createModule(Element mod) {
         ModuleDetails check = new ModuleDetails();
         check.setName(getAttributeValue(mod, "name"));
-        check.setFullQualifiedName(getAttributeValue(mod, "fullyQualifiedName"));
+        check.setFullQualifiedName(getAttributeValue(mod, "fully-qualified-name"));
         check.setParent(getAttributeValue(mod, "parent"));
         check.setDescription(getDirectChildsByTag(mod, "description").get(0).getFirstChild().getNodeValue());
         List<ModulePropertyDetails> modulePropertyDetailsList =
                 createProperties(getDirectChildsByTag(mod, "properties").get(0));
-        check.setProperties(modulePropertyDetailsList);
-        check.setModulePropertyByKey(modulePropertyDetailsList);
-        check.setViolationMessageKeys(getListContentByAttribute(mod, "message-keys", "message-key", "key"));
+        check.addToProperties(modulePropertyDetailsList);
+        check.addToViolationMessages(getListContentByAttribute(mod, "message-keys", "message-key", "key"));
         return check;
     }
 
@@ -65,10 +64,10 @@ public class XMLReader {
             propertyDetails.setName(getAttributeValue(prop, "name"));
             propertyDetails.setType(getAttributeValue(prop, "type"));
             propertyDetails.setDefaultValue(getAttributeValue(prop, "default-value"));
-            propertyDetails.setValueType(getAttributeValue(prop, "value-type"));
+            if (prop.hasAttribute("validation-type")) {
+                propertyDetails.setValidationType(getAttributeValue(prop, "validation-type"));
+            }
             propertyDetails.setDescription(getDirectChildsByTag(prop, "description").get(0).getFirstChild().getNodeValue());
-            propertyDetails.setValues(getListContentByAttribute(prop, "property-options",
-                    "property-option", "value"));
             result.add(propertyDetails);
         }
         return result;

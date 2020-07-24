@@ -6,14 +6,9 @@ public class ModulePropertyDetails {
     private String name;
     private String type;
     private String defaultValue;
-    /**
-     * This property can have two options:
-     * scalar - it means that value is single (like int, String, .... ).
-     * set (or collection) - is set/array/collection of values separated by , in our case set of tokens or set of String.
-     */
-    private String valueType;
+    /** This property is optional and will be used for special cases such as regexp and tokenSet. */
+    private String validationType;
     private String description;
-    private List<String> values;
 
     public String getName() {
         return name;
@@ -39,12 +34,12 @@ public class ModulePropertyDetails {
         this.defaultValue = defaultValue;
     }
 
-    public String getValueType() {
-        return valueType;
+    public String getValidationType() {
+        return validationType;
     }
 
-    public void setValueType(String valueType) {
-        this.valueType = valueType;
+    public void setValidationType(String validationType) {
+        this.validationType = validationType;
     }
 
     public String getDescription() {
@@ -53,13 +48,5 @@ public class ModulePropertyDetails {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public List<String> getValues() {
-        return values;
-    }
-
-    public void setValues(List<String> values) {
-        this.values = values;
     }
 }
