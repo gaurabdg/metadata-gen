@@ -2,18 +2,15 @@ package org.example;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import org.example.ModuleDetails;
-import org.example.XMLReader;
 import org.junit.jupiter.api.Test;
 
 public class XMLReaderTest {
     @Test
-    public void testModuleDetails() throws Exception{
-        XMLReader xr = new XMLReader();
+    public void testModuleDetails() {
+        XMLMetaReader xr = new XMLMetaReader();
         ModuleDetails actualEmptyBlockDetails = xr.read(getClass().getClassLoader()
                 .getResourceAsStream("EmptyBlockCheck.xml"), ModuleType.CHECK);
         ModuleDetails emptyBlockCheck = new ModuleDetails();
@@ -69,14 +66,8 @@ public class XMLReaderTest {
             assertEquals(expectedPropertiesDescription.get(i),
                     actualEmptyBlockDetails.getProperties().get(i).getDescription(),
                     "Property: " + expectedPropertiesName.get(i) + " description doesn't macth");
-            assertEquals(expectedPropertiesValues.get(i),
-                    actualEmptyBlockDetails.getProperties().get(i).getValues(),
-                    "Property: " + expectedPropertiesName.get(i) + " values doesn't macth");
-            assertEquals(expectedPropertiesValueType.get(i),
-                    actualEmptyBlockDetails.getProperties().get(i).getValueType(),
-                    "Property: " + expectedPropertiesName.get(i) + " value type doesn't macth");
         }
-        emptyBlockCheck.setViolationMessageKeys(Arrays.asList("block.noStatement", "block.empty"));
+        emptyBlockCheck.addToViolationMessages(Arrays.asList("block.noStatement", "block.empty"));
 
     }
 }

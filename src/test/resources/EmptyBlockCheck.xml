@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle-metadata>
   <module>
-    <check name="EmptyBlock" fullyQualifiedName="com.puppycrawl.tools.checkstyle.checks.blocks.EmptyBlockCheck"
+    <check name="EmptyBlock"
+           fully-qualified-name="com.puppycrawl.tools.checkstyle.checks.blocks.EmptyBlockCheck"
            parent="TreeWalker">
       <description><![CDATA[<p>Checks for empty blocks. This check does not validate sequential blocks.</p>
         <p>Sequential blocks won't be checked. Also, no violations for fallthrough:</p>
@@ -24,34 +25,12 @@
                 case 1: { }
               }</pre>]]></description>
       <properties>
-        <property name="option" type="BlockOption" default-value="statement" value-type="scalar">
+        <property name="option" type="BlockOption" default-value="statement">
           <description>specify the policy on block contents.</description>
-          <property-options>
-            <property-option value="statement" />
-            <property-option value="text" />
-          </property-options>
         </property>
         <property name="tokens" type="subsetOfTokenType"
-                  default-value="LITERAL_WHILE,LITERAL_TRY,LITERAL_FINALLY,LITERAL_DO,LITERAL_IF,LITERAL_ELSE,LITERAL_FOR,INSTANCE_INIT,STATIC_INIT,LITERAL_SWITCH,LITERAL_SYNCHRONIZED"
-                  value-type="set">
+                  default-value="LITERAL_WHILE,LITERAL_TRY,LITERAL_FINALLY,LITERAL_DO,LITERAL_IF,LITERAL_ELSE,LITERAL_FOR,INSTANCE_INIT,STATIC_INIT,LITERAL_SWITCH,LITERAL_SYNCHRONIZED">
           <description>tokens to check</description>
-          <property-options>
-            <property-option value="LITERAL_WHILE" />
-            <property-option value="LITERAL_TRY" />
-            <property-option value="LITERAL_CATCH" />
-            <property-option value="LITERAL_FINALLY" />
-            <property-option value="LITERAL_DO" />
-            <property-option value="LITERAL_IF" />
-            <property-option value="LITERAL_ELSE" />
-            <property-option value="LITERAL_FOR" />
-            <property-option value="INSTANCE_INIT" />
-            <property-option value="STATIC_INIT" />
-            <property-option value="LITERAL_SWITCH" />
-            <property-option value="LITERAL_SYNCHRONIZED" />
-            <property-option value="LITERAL_CASE" />
-            <property-option value="LITERAL_DEFAULT" />
-            <property-option value="ARRAY_INIT" />
-          </property-options>
         </property>
       </properties>
       <message-keys>

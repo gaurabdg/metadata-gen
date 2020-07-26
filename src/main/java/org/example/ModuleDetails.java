@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,9 +11,10 @@ public class ModuleDetails {
     private String fullQualifiedName;
     private String parent;
     private String description;
-    private List<ModulePropertyDetails> properties;
+    private final List<ModulePropertyDetails> properties = new ArrayList<>();
     private final Map<String, ModulePropertyDetails> modulePropertyKeyMap = new HashMap<>();
-    private List<String> violationMessageKeys;
+    private final List<String> violationMessageKeys = new ArrayList<>();
+    private ModuleType moduleType;
 
     public String getName() {
         return name;
@@ -46,28 +49,42 @@ public class ModuleDetails {
     }
 
     public List<ModulePropertyDetails> getProperties() {
-        return properties;
+        return Collections.unmodifiableList(properties);
     }
 
-    public void setProperties(List<ModulePropertyDetails> properties) {
-        this.properties = properties;
+    public void addToProperties(ModulePropertyDetails property) {
+        properties.add(property);
+        modulePropertyKeyMap.put(property.getName(), property);
+    }
+
+    public void addToProperties(List<ModulePropertyDetails> modulePropertyDetailsList) {
+        properties.addAll(modulePropertyDetailsList);
+        modulePropertyDetailsList.forEach(modulePropertyDetails -> {
+            modulePropertyKeyMap.put(modulePropertyDetails.getName(), modulePropertyDetails);
+        });
     }
 
     public List<String> getViolationMessageKeys() {
-        return violationMessageKeys;
+        return Collections.unmodifiableList(violationMessageKeys);
     }
 
-    public void setViolationMessageKeys(List<String> violationMessageKeys) {
-        this.violationMessageKeys = violationMessageKeys;
+    public void addToViolationMessages(String msg) {
+        violationMessageKeys.add(msg);
+    }
+
+    public void addToViolationMessages(List<String> msgList) {
+        violationMessageKeys.addAll(msgList);
     }
 
     public ModulePropertyDetails getModulePropertyByKey(String key) {
         return modulePropertyKeyMap.get(key);
     }
 
-    public void setModulePropertyByKey(List<ModulePropertyDetails> modulePropertyDetailsList) {
-        modulePropertyDetailsList.forEach(modulePropertyDetails -> {
-            modulePropertyKeyMap.put(modulePropertyDetails.getName(), modulePropertyDetails);
-        });
+    public ModuleType getModuleType() {
+        return moduleType;
+    }
+
+    public void setModuleType(ModuleType moduleType) {
+        this.moduleType = moduleType;
     }
 }
