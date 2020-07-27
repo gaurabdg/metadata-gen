@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<checkstyle-metadata>
+  <module>
+    <check name="CommentsIndentationCheck" fully-qualified-name="com.puppycrawl.tools.checkstyle.checks.indentation.CommentsIndentationCheck" parent="com.puppycrawl.tools.checkstyle.TreeWalker">
+      <description><![CDATA[<p>
+ Controls the indentation between comments and surrounding code.
+ Comments are indented at the same level as the surrounding code.
+ Detailed info about such convention can be found
+ <a href="https://checkstyle.org/styleguides/google-java-style-20180523/javaguide.html#s4.8.6.1-block-comment-style">
+ here</a>
+ </p><p>
+ Please take a look at the following examples to understand how the check works:
+ </p><p>
+ Example #1: Block comments.
+ </p><p>
+ Example #2: Comment is placed at the end of the block and has previous statement.
+ </p><p>
+ Example #3: Comment is used as a single line border to separate groups of methods.
+ </p><p>
+ Example #4: Comment has distributed previous statement.
+ </p><p>
+ Example #5: Single line block comment is placed within an empty code block.
+ Note, if comment is placed at the end of the empty code block, we have
+ Checkstyle's limitations to clearly detect user intention of explanation
+ target - above or below. The only case we can assume as a violation is when
+ a single line comment within the empty code block has indentation level that
+ is lower than the indentation level of the closing right curly brace.
+ </p><p>
+ Example #6: 'fallthrough' comments and similar.
+ </p><p>
+ Example #7: Comment is placed within a distributed statement.
+ </p><p>
+ Example #8: Comment is placed within an empty case block.
+ Note, if comment is placed at the end of the empty case block, we have
+ Checkstyle's limitations to clearly detect user intention of explanation
+ target - above or below. The only case we can assume as a violation is when
+ a single line comment within the empty case block has indentation level that
+ is lower than the indentation level of the next case token.
+ </p><p>
+ Example #9: Single line block comment has previous and next statement.
+ </p><p>
+ Example #10: Comment within the block tries to describe the next code block.
+ </p>]]></description>
+      <properties>
+        <property name="tokens" type="int[]" default-value="SINGLE_LINE_COMMENT,BLOCK_COMMENT_BEGIN">
+          <description><![CDATA[tokens to check]]></description>
+        </property>
+      </properties>
+      <message-keys>
+        <message-key key="comments.indentation.block"/>
+        <message-key key="comments.indentation.single"/>
+      </message-keys>
+    </check>
+  </module>
+</checkstyle-metadata>
