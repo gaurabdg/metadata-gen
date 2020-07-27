@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<checkstyle-metadata>
+  <module>
+    <check name="FileTabCharacterCheck" fully-qualified-name="com.puppycrawl.tools.checkstyle.checks.whitespace.FileTabCharacterCheck" parent="com.puppycrawl.tools.checkstyle.Checker">
+      <description><![CDATA[<p>
+ Checks that there are no tab characters ({@code '\t'}) in the source code.
+ </p><p>
+ Rationale:
+ </p>]]></description>
+      <properties>
+        <property name="eachLine" type="boolean" default-value="false">
+          <description><![CDATA[Control whether to report on each line containing a tab,
+ or just the first instance.]]></description>
+        </property>
+        <property name="fileExtensions" type="java.lang.String[]" default-value="all files">
+          <description><![CDATA[Specify file type extension of files to process.]]></description>
+        </property>
+      </properties>
+      <message-keys>
+        <message-key key="containsTab"/>
+        <message-key key="file.containsTab"/>
+      </message-keys>
+    </check>
+  </module>
+</checkstyle-metadata>
