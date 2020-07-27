@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<checkstyle-metadata>
+  <module>
+    <filter name="SuppressWarningsFilter" fully-qualified-name="com.puppycrawl.tools.checkstyle.filters.SuppressWarningsFilter">
+      <description><![CDATA[]]></description>
+    </filter>
+  </module>
+</checkstyle-metadata>
