@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<checkstyle-metadata>
+  <module>
+    <check name="ModifierOrderCheck" fully-qualified-name="com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck">
+      <description><![CDATA[]]></description>
+    </check>
+  </module>
+</checkstyle-metadata>
