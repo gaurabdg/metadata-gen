@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<checkstyle-metadata>
+  <module>
+    <check name="NPathComplexityCheck" fully-qualified-name="com.puppycrawl.tools.checkstyle.checks.metrics.NPathComplexityCheck" parent="com.puppycrawl.tools.checkstyle.TreeWalker">
+      <description><![CDATA[<p>
+ Checks the NPATH complexity against a specified limit.
+ </p><p>
+ The NPATH metric computes the number of possible execution paths through a
+ function(method). It takes into account the nesting of conditional statements
+ and multi-part boolean expressions (A &amp;&amp; B, C || D, E ? F :G and
+ their combinations).
+ </p><p>
+ The NPATH metric was designed base on Cyclomatic complexity to avoid problem
+ of Cyclomatic complexity metric like nesting level within a function(method).
+ </p><p>
+ Metric was described at <a href="http://dl.acm.org/citation.cfm?id=42379">
+ "NPATH: a measure of execution pathcomplexity and its applications"</a>.
+ If you need detailed description of algorithm, please read that article,
+ it is well written and have number of examples and details.
+ </p><p>
+ Here is some quotes:
+ </p><p>
+ <b>Rationale:</b> Nejmeh says that his group had an informal NPATH limit of
+ 200 on individual routines; functions(methods) that exceeded this value were
+ candidates for further decomposition - or at least a closer look.
+ <b>Please do not be fanatic with limit 200</b> - choose number that suites
+ your project style. Limit 200 is empirical number base on some sources of at
+ AT&amp;T Bell Laboratories of 1988 year.
+ </p>]]></description>
+      <properties>
+        <property name="max" type="int" default-value="200">
+          <description><![CDATA[Specify the maximum threshold allowed.]]></description>
+        </property>
+      </properties>
+      <message-keys>
+        <message-key key="npathComplexity"/>
+      </message-keys>
+    </check>
+  </module>
+</checkstyle-metadata>
