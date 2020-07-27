@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<checkstyle-metadata>
+  <module>
+    <check name="AvoidInlineConditionalsCheck" fully-qualified-name="com.puppycrawl.tools.checkstyle.checks.coding.AvoidInlineConditionalsCheck">
+      <description><![CDATA[]]></description>
+    </check>
+  </module>
+</checkstyle-metadata>

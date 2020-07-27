@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<checkstyle-metadata>
+  <module>
+    <check name="CatchParameterNameCheck" fully-qualified-name="com.puppycrawl.tools.checkstyle.checks.naming.CatchParameterNameCheck" parent="com.puppycrawl.tools.checkstyle.TreeWalker">
+      <description><![CDATA[<p>
+ Checks that {@code catch} parameter names conform to a specified pattern.
+ </p><p>
+ Default pattern has the following characteristic:
+ </p>]]></description>
+      <properties>
+        <property name="format" type="java.util.regex.Pattern" default-value="^(e|t|ex|[a-z][a-z][a-zA-Z]+)$">
+          <description><![CDATA[Specifies valid identifiers.]]></description>
+        </property>
+      </properties>
+      <message-keys>
+        <message-key key="name.invalidPattern"/>
+      </message-keys>
+    </check>
+  </module>
+</checkstyle-metadata>
