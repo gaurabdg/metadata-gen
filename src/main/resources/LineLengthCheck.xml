@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<checkstyle-metadata>
+  <module>
+    <check name="LineLengthCheck" fully-qualified-name="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck" parent="com.puppycrawl.tools.checkstyle.Checker">
+      <description><![CDATA[<p>
+ Checks for long lines.
+ </p><p>
+ Rationale: Long lines are hard to read in printouts or if developers
+ have limited screen space for the source code, e.g. if the IDE displays
+ additional information like project tree, class hierarchy, etc.
+ </p>]]></description>
+      <properties>
+        <property name="fileExtensions" type="java.lang.String[]" default-value="all files">
+          <description><![CDATA[Specify file extensions that are accepted.]]></description>
+        </property>
+        <property name="ignorePattern" type="java.util.regex.Pattern" default-value="^$ (empty)">
+          <description><![CDATA[Specify pattern for lines to ignore.]]></description>
+        </property>
+        <property name="max" type="int" default-value="80">
+          <description><![CDATA[Specify the maximum line length allowed.]]></description>
+        </property>
+      </properties>
+      <message-keys>
+        <message-key key="maxLineLen"/>
+      </message-keys>
+    </check>
+  </module>
+</checkstyle-metadata>
