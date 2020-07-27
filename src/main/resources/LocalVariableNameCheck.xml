@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<checkstyle-metadata>
+  <module>
+    <check name="LocalVariableNameCheck" fully-qualified-name="com.puppycrawl.tools.checkstyle.checks.naming.LocalVariableNameCheck" parent="com.puppycrawl.tools.checkstyle.TreeWalker">
+      <description><![CDATA[<p>
+ Checks that local, non-{@code final} variable names conform to a specified pattern.
+ A catch parameter is considered to be
+ a local variable.
+ </p>]]></description>
+      <properties>
+        <property name="format" type="java.util.regex.Pattern" default-value="^[a-z][a-zA-Z0-9]*$">
+          <description><![CDATA[Specifies valid identifiers.]]></description>
+        </property>
+        <property name="allowOneCharVarInForLoop" type="format" default-value="boolean">
+          <description><![CDATA[Allow one character variable name in
+ <a href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/for.html">
+ initialization expressions</a>
+ in FOR loop if one char variable name is prohibited by {@code format} regexp. For example:
+ <pre>
+ for (int i = 1; i &lt; 10; i++) { // OK
+     int j = 1; // violation
+ }
+ for (int K = 1; K &lt; 10; K++) { // OK
+     int j = 1; // violation
+ }
+ List list = new ArrayList();
+ for (Object o : list) { // OK
+     int j = 1; // violation
+ }
+ for (Object O : list) { // OK
+     int j = 1; // violation
+ }
+ </pre>]]></description>
+        </property>
+      </properties>
+      <message-keys>
+        <message-key key="name.invalidPattern"/>
+      </message-keys>
+    </check>
+  </module>
+</checkstyle-metadata>
