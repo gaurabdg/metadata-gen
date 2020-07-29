@@ -98,14 +98,19 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
      */
     public void scrapeContent(DetailNode ast) {
         if (ast.getType() == JavadocTokenTypes.PARAGRAPH) {
-            if (currentStatus == ScrapeStatus.DESCRIPTION) {
-                descriptionText += constructSubTreeText(ast, 0, ast.getChildren().length - 1);
-            }
-            else if (getParentText(ast) != null) {
+            if (getParentText(ast) != null) {
+                currentStatus = ScrapeStatus.PARENT;
+
                 moduleDetails.setParent(getParentText(ast));
+                if (moduleDetails.getDescription() == null) {
+                    moduleDetails.setDescription(descriptionText);
+                }
             }
             else if (isViolationMessagesText(ast)) {
                 currentStatus = ScrapeStatus.VIOLATION_MESSAGES;
+            }
+            else if (currentStatus == ScrapeStatus.DESCRIPTION) {
+                descriptionText += constructSubTreeText(ast, 0, ast.getChildren().length - 1);
             }
         }
         else if (ast.getType() == JavadocTokenTypes.LI){
@@ -119,7 +124,6 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
                 moduleDetails.addToViolationMessages(getViolationMessages(ast));
             }
         }
-
     }
 
     /**
@@ -400,6 +404,7 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
     private enum ScrapeStatus {
         DESCRIPTION,
         PROPERTY,
+        PARENT,
         VIOLATION_MESSAGES
     }
 }
