@@ -14,6 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -119,10 +120,11 @@ public class XMLMetaReader {
     }
 
     public List<ModuleDetails> readAllModules() {
+        Set<String> standardModuleFileNames =
+                new Reflections("com.puppycrawl.tools.checkstyle.meta", new ResourcesScanner()).getResources(Pattern.compile(".*\\.xml"));
         List<ModuleDetails> result = new ArrayList<>();
-        Reflections reflections = new Reflections("org.example", new ResourcesScanner());
-        Set<String> fileNames = reflections.getResources(Pattern.compile(".*\\.xml"));
-        fileNames.forEach(fileName -> {
+
+        standardModuleFileNames.forEach(fileName -> {
             ModuleType moduleType;
             if (fileName.endsWith("FileFilter.xml")) {
                 moduleType = ModuleType.FILEFILTER;
@@ -139,6 +141,7 @@ public class XMLMetaReader {
             catch (IOException ignored) {
             }
         });
+
         return result;
     }
 }
