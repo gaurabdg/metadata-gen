@@ -1,7 +1,5 @@
 package org.example;
 
-import java.util.List;
-
 public class ModulePropertyDetails {
     private String name;
     private String type;

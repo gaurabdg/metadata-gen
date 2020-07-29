@@ -19,14 +19,16 @@ import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
 public class JavadocMetadataScraper extends AbstractJavadocCheck {
-    private static final Pattern TOKEN_TEXT_PATTERN = Pattern.compile("([A-Z]+_*)+[A-Z]+");
     private static final Pattern PROPERTY_TAG = Pattern.compile("\\s*Property\\s*");
-    private static final Pattern DEFAULT_VALUE_TAG = Pattern.compile("\\s*Default value is:*\\s*");
-    private static final Pattern DESC_CLEAN = Pattern.compile("-", Pattern.LITERAL);
+    private static final Pattern TYPE_TAG = Pattern.compile("\\s.*Type is\\s.*");
+    private static final Pattern VALIDATION_TYPE_TAG
+            = Pattern.compile("\\s.*Validation type is\\s.*");
+    private static final Pattern DEFAULT_VALUE_TAG = Pattern.compile("\\s*Default value is:*.*");
     private static final Pattern PARENT_TAG = Pattern.compile("\\s*Parent is\\s*");
     private static final Pattern VIOLATION_MESSAGES_TAG =
             Pattern.compile("\\s*Violation Message Keys:\\s*");
-    private static final Pattern TYPE_TAG = Pattern.compile("\\s.*Type is\\s.*");
+    private static final Pattern TOKEN_TEXT_PATTERN = Pattern.compile("([A-Z]+_*)+[A-Z]+");
+    private static final Pattern DESC_CLEAN = Pattern.compile("-", Pattern.LITERAL);
     private static final Pattern PACKAGE_NAME_CONVERSION_CLEAN_UP = Pattern.compile("/");
     private static final Pattern PATTERN_QUOTES_REMOVAL = Pattern.compile("\"");
 
@@ -136,25 +138,37 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
         ModulePropertyDetails modulePropertyDetails = new ModulePropertyDetails();
         DetailNode propertyNameTag
                 = getFirstChildOfType(nodeLi, JavadocTokenTypes.JAVADOC_INLINE_TAG, 0);
-
-        DetailNode typeChild = null;
-        for (DetailNode child : nodeLi.getChildren()) {
-            if (TYPE_TAG.matcher(child.getText()).matches()) {
-                typeChild = child;
-                break;
-            }
-        }
+        DetailNode propertyType = getFirstChildOfMatchingText(nodeLi, TYPE_TAG);
 
         String propertyDesc = DESC_CLEAN.matcher(constructSubTreeText(nodeLi, propertyNameTag.getIndex() + 1,
-                typeChild.getIndex() - 1)).replaceAll(Matcher.quoteReplacement(""));
-        DetailNode propertyTypeTag = getFirstChildOfType(nodeLi,
-                JavadocTokenTypes.JAVADOC_INLINE_TAG, propertyNameTag.getIndex() + 1);
+                propertyType.getIndex() - 1)).replaceAll(Matcher.quoteReplacement(""));
 
-        modulePropertyDetails.setDefaultValue(getPropertyDefaultText(nodeLi, propertyTypeTag));
-        modulePropertyDetails.setName(getTextFromTag(propertyNameTag));
         modulePropertyDetails.setDescription(propertyDesc.trim());
-        modulePropertyDetails.setType(getTextFromTag(propertyTypeTag));
+        modulePropertyDetails.setName(getTextFromTag(propertyNameTag));
+        modulePropertyDetails.setType(
+                getTagTextFromProperty(nodeLi,
+                getFirstChildOfMatchingText(nodeLi, TYPE_TAG)));
+        final DetailNode validationTypeNode = getFirstChildOfMatchingText(nodeLi,
+                VALIDATION_TYPE_TAG);
+        if (validationTypeNode != null) {
+            modulePropertyDetails.setValidationType(getTagTextFromProperty(nodeLi,
+                    validationTypeNode));
+        }
+        modulePropertyDetails.setDefaultValue(getPropertyDefaultText(nodeLi));
         return modulePropertyDetails;
+    }
+
+    /**
+     * Get tag text from property data.
+     *
+     * @param nodeLi javadoc li item node
+     * @param propertyMeta property javadoc node
+     * @return property metadata text
+     */
+    private static String getTagTextFromProperty(DetailNode nodeLi, DetailNode propertyMeta) {
+        DetailNode tagNode = getFirstChildOfType(nodeLi,
+                JavadocTokenTypes.JAVADOC_INLINE_TAG, propertyMeta.getIndex() + 1);
+        return getTextFromTag(tagNode);
     }
 
     /**
@@ -223,19 +237,14 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
      * @param propertyTypeTag property type javadoc node for reference
      * @return default property text
      */
-    private static String getPropertyDefaultText(DetailNode nodeLi, DetailNode propertyTypeTag) {
+    private static String getPropertyDefaultText(DetailNode nodeLi) {
         String result;
+        DetailNode defaultValueNode = getFirstChildOfMatchingText(nodeLi, DEFAULT_VALUE_TAG);
         DetailNode propertyDefaultValueTag = getFirstChildOfType(nodeLi,
-                JavadocTokenTypes.JAVADOC_INLINE_TAG, propertyTypeTag.getIndex() + 1);
+                JavadocTokenTypes.JAVADOC_INLINE_TAG, defaultValueNode.getIndex() + 1);
         if (propertyDefaultValueTag == null) {
-            int defaultValueTokensIdx = propertyTypeTag.getIndex();
-            DetailNode candidate = nodeLi.getChildren()[defaultValueTokensIdx];
-            while (!DEFAULT_VALUE_TAG.matcher(candidate.getText()).matches()) {
-                candidate = nodeLi.getChildren()[defaultValueTokensIdx];
-                defaultValueTokensIdx++;
-            }
             final String tokenText = constructSubTreeText(nodeLi,
-                    defaultValueTokensIdx, nodeLi.getChildren().length);
+                    defaultValueNode.getIndex(), nodeLi.getChildren().length);
             result = cleanDefaultTokensText(tokenText);
         }
         else {
@@ -283,6 +292,20 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
     private static DetailNode getFirstChildOfType(DetailNode node, int tokenType, int offset){
         return Arrays.stream(node.getChildren())
                 .filter(child -> child.getIndex() >= offset && child.getType() == tokenType)
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
+     * Get first child of parent node matching the provided pattern.
+     *
+     * @param node parent node
+     * @param pattern pattern to match against
+     * @return the first child node matching the condition
+     */
+    private static DetailNode getFirstChildOfMatchingText(DetailNode node, Pattern pattern) {
+        return Arrays.stream(node.getChildren())
+                .filter(child -> pattern.matcher(child.getText()).matches())
                 .findFirst()
                 .orElse(null);
     }
