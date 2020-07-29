@@ -2,6 +2,9 @@ package org.example;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.regex.Pattern;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -10,6 +13,8 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 
 public class XMLMetaWriter {
+    private static final Pattern FILEPATH_CONVERSION = Pattern.compile("\\.");
+
     public void write(ModuleDetails moduleDetails) throws IOException {
         Document document = DocumentHelper.createDocument();
         Element root = document.addElement("checkstyle-metadata").addElement("module");
@@ -49,13 +54,14 @@ public class XMLMetaWriter {
         }
 
         OutputFormat format = OutputFormat.createPrettyPrint();
-        String moduleName = moduleDetails.getName();
-        if (moduleDetails.getModuleType() == ModuleType.CHECK) {
-            moduleName += "Check";
-        }
-        XMLWriter writer =
-                new XMLWriter(new FileOutputStream(Main.outputRootPath + moduleName + ".xml"),
-                        format);
+
+        String moduleFilePath = FILEPATH_CONVERSION.matcher(moduleDetails.getFullQualifiedName()).replaceAll("/");
+        int idxOfCheckstyle = moduleFilePath.indexOf("checkstyle") + "checkstyle".length();
+        String modifiedPath = Main.outputRootPath + moduleFilePath.substring(0, idxOfCheckstyle)
+                + "/meta/" + moduleFilePath.substring(idxOfCheckstyle + 1) + ".xml";
+
+        XMLWriter writer = new XMLWriter(new FileOutputStream(modifiedPath), format);
         writer.write(document);
     }
 }
+
