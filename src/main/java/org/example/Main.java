@@ -38,18 +38,24 @@ public final class Main {
         createMeta(checker, args[0]);
     }
 
-    public static void createMeta(Checker checker, String rootPath) throws CheckstyleException, IOException {
-        final List<String> moduleFolders = Arrays.asList("checks", "filters", "filefilters");
+    public static void createMeta(Checker checker, String path) throws CheckstyleException,
+            IOException {
         List<File> validFiles = new ArrayList<>();
-        for (String folder : moduleFolders) {
-            try (Stream<Path> files = Files.walk(Paths.get(rootPath + "/" + folder))) {
-                validFiles.addAll(files.map(Path::toString)
-                        .filter(fileName -> (fileName.endsWith("SuppressWarningsHolder.java")
-                                || fileName.endsWith("Check.java")
-                                || fileName.endsWith("Filter.java"))
-                                && !fileName.contains("Abstract"))
-                        .map(File::new)
-                        .collect(Collectors.toList()));
+        if (path.endsWith(".java")) {
+            validFiles.add(new File(path));
+        }
+        else {
+            final List<String> moduleFolders = Arrays.asList("checks", "filters", "filefilters");
+            for (String folder : moduleFolders) {
+                try (Stream<Path> files = Files.walk(Paths.get(path + "/" + folder))) {
+                    validFiles.addAll(files.map(Path::toString)
+                            .filter(fileName -> (fileName.endsWith("SuppressWarningsHolder.java")
+                                    || fileName.endsWith("Check.java")
+                                    || fileName.endsWith("Filter.java"))
+                                    && !fileName.contains("Abstract"))
+                            .map(File::new)
+                            .collect(Collectors.toList()));
+                }
             }
         }
 

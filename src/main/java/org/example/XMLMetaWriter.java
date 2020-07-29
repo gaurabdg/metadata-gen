@@ -35,9 +35,7 @@ public class XMLMetaWriter {
                 property.addAttribute("name", modulePropertyDetails.getName());
                 property.addAttribute("type", modulePropertyDetails.getType());
                 property.addAttribute("default-value", modulePropertyDetails.getDefaultValue());
-                // to be configured in scraper after implementation of validationType property,
-                // no need of scalar/set as tokenSet will be only set
-                property.addAttribute("value-type", modulePropertyDetails.getValidationType());
+                property.addAttribute("validation-type", modulePropertyDetails.getValidationType());
                 property.addElement("description").addCDATA(modulePropertyDetails.getDescription());
             }
         }

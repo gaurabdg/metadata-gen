@@ -1,5 +1,7 @@
 package org.example;
 
+import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -13,6 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 public class XMLMetaReader {
     public ModuleDetails read(InputStream moduleMetadataStream, ModuleType moduleType) {
@@ -37,7 +41,7 @@ public class XMLMetaReader {
             module = getDirectChildsByTag(element, "filter").get(0);
         }
         else if (moduleType == ModuleType.FILEFILTER) {
-            module = getDirectChildsByTag(element, "filter").get(0);
+            module = getDirectChildsByTag(element, "file-filter").get(0);
         }
         return createModule(module);
     }
@@ -48,10 +52,17 @@ public class XMLMetaReader {
         check.setFullQualifiedName(getAttributeValue(mod, "fully-qualified-name"));
         check.setParent(getAttributeValue(mod, "parent"));
         check.setDescription(getDirectChildsByTag(mod, "description").get(0).getFirstChild().getNodeValue());
-        List<ModulePropertyDetails> modulePropertyDetailsList =
-                createProperties(getDirectChildsByTag(mod, "properties").get(0));
-        check.addToProperties(modulePropertyDetailsList);
-        check.addToViolationMessages(getListContentByAttribute(mod, "message-keys", "message-key", "key"));
+        List<Element> properties = getDirectChildsByTag(mod, "properties") ;
+        if (!properties.isEmpty()) {
+            List<ModulePropertyDetails> modulePropertyDetailsList =
+                    createProperties(properties.get(0));
+            check.addToProperties(modulePropertyDetailsList);
+        }
+        List<String> messageKeys = getListContentByAttribute(mod, "message-keys", "message-key",
+                "key");
+        if (messageKeys != null) {
+            check.addToViolationMessages(messageKeys);
+        }
         return check;
     }
 
@@ -101,5 +112,29 @@ public class XMLMetaReader {
 
     public static String getAttributeValue(Element element, String attribute) {
         return element.getAttributes().getNamedItem(attribute).getNodeValue();
+    }
+
+    public List<ModuleDetails> readAllModules() {
+        List<ModuleDetails> result = new ArrayList<>();
+        Reflections reflections = new Reflections("org.example", new ResourcesScanner());
+        Set<String> fileNames = reflections.getResources(Pattern.compile(".*\\.xml"));
+        fileNames.forEach(fileName -> {
+            ModuleType moduleType;
+            if (fileName.endsWith("FileFilter.xml")) {
+                moduleType = ModuleType.FILEFILTER;
+            }
+            else if (fileName.endsWith("Filter.xml")) {
+                moduleType = ModuleType.FILTER;
+            }
+            else {
+                moduleType = ModuleType.CHECK;
+            }
+            try (InputStream inputStream = getClass().getResourceAsStream("/" + fileName)) {
+                result.add(read(inputStream, moduleType));
+            }
+            catch (IOException ignored) {
+            }
+        });
+        return result;
     }
 }
