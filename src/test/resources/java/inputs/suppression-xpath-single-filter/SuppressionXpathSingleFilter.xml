@@ -3,7 +3,7 @@
 <checkstyle-metadata>
   <module>
     <filter name="SuppressionXpathSingleFilter"
-            fully-qualified-name="example-pkg.SuppressionXpathSingleFilter"
+            fully-qualified-name="inputs.suppression-xpath-single-filter.SuppressionXpathSingleFilter"
             parent="com.puppycrawl.tools.checkstyle.TreeWalker">
       <description><![CDATA[<p>
  Filter {@code SuppressionXpathSingleFilter} suppresses audit events for Checks

@@ -3,7 +3,7 @@
 <checkstyle-metadata>
   <module>
     <file-filter name="BeforeExecutionExclusionFileFilter"
-                 fully-qualified-name="example-pkg.BeforeExecutionExclusionFileFilter"
+                 fully-qualified-name="inputs.before-execution-exclusion-file-filter.BeforeExecutionExclusionFileFilter"
                  parent="com.puppycrawl.tools.checkstyle.Checker">
       <description><![CDATA[<p>
  File filter {@code BeforeExecutionExclusionFileFilter} decides which files should be

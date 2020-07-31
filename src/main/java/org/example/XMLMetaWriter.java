@@ -49,7 +49,7 @@ public class XMLMetaWriter {
 
         OutputFormat format = OutputFormat.createPrettyPrint();
         XMLWriter writer =
-                new XMLWriter(new FileOutputStream(Main.outputRootPath + "/" + moduleDetails.getName() + ".xml"),
+                new XMLWriter(new FileOutputStream(Main.outputRootPath + moduleDetails.getName() + ".xml"),
                         format);
         writer.write(document);
     }
