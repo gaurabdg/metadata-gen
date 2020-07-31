@@ -65,32 +65,4 @@ import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 @StatelessCheck
 public class UpperEllCheck extends AbstractCheck {
 
-    /**
-     * A key is pointing to the warning message text in "messages.properties"
-     * file.
-     */
-    public static final String MSG_KEY = "upperEll";
-
-    @Override
-    public int[] getDefaultTokens() {
-        return getRequiredTokens();
-    }
-
-    @Override
-    public int[] getAcceptableTokens() {
-        return getRequiredTokens();
-    }
-
-    @Override
-    public int[] getRequiredTokens() {
-        return new int[] {TokenTypes.NUM_LONG};
-    }
-
-    @Override
-    public void visitToken(DetailAST ast) {
-        if (CommonUtil.endsWithChar(ast.getText(), 'l')) {
-            log(ast, MSG_KEY);
-        }
-    }
-
 }

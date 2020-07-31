@@ -4,52 +4,78 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+
 import org.junit.jupiter.api.Test;
 
 public class JavadocMetadataScraperTest {
+    private static final String METADATA_OUTPUT_PATH = System.getProperty("user.dir") + "/src"
+            + "/test/resources/java/inputs/";
 
     @Test
     public void testCheckModuleAndEnumTokenValues() throws Exception {
-        checkModuleMeta("RightCurlyCheck", ModuleType.CHECK);
+        checkModuleMeta("right-curly-check/RightCurlyCheck", ModuleType.CHECK);
     }
 
     @Test
     public void testFileFilterModuleAndEmptyViolationMessageKeys() throws Exception {
-        checkModuleMeta("BeforeExecutionExclusionFileFilter", ModuleType.FILEFILTER);
+        checkModuleMeta("before-execution-exclusion-file-filter"
+                + "/BeforeExecutionExclusionFileFilter", ModuleType.FILEFILTER);
     }
 
     @Test
     public void testFilterModule() throws Exception {
-        checkModuleMeta("SuppressionXpathSingleFilter", ModuleType.FILTER);
+        checkModuleMeta("suppression-xpath-single-filter/SuppressionXpathSingleFilter",
+                ModuleType.FILTER);
     }
 
     @Test
     public void testEmptyPropretiesList() throws Exception {
-        checkModuleMeta("UpperEllCheck", ModuleType.CHECK);
+        checkModuleMeta("upper-ell-check/UpperEllCheck", ModuleType.CHECK);
     }
 
-    private static String getFileInputPath(String moduleName) {
-        return System.getProperty("user.dir") + "/src/test/resources/java/example-pkg/" + moduleName + ".java";
+    /**
+     * This test shows how the presence of a "marker" is required to differentiate the examples
+     * section in absence of properties list e.g. UpperEllCheck.
+     *
+     * https://github.com/checkstyle/metadata-gen/issues/34 will be closed when this test passes.
+     *
+     * @throws Exception exception
+     */
+    @Test
+    public void testNonPropertyModuleDescription() throws Exception {
+        final String moduleName = "upper-ell-check/UpperEllCheck";
+        Main.main(getJavaFileInputPath(moduleName), METADATA_OUTPUT_PATH + "/upper-ell-check/");
+        ModuleDetails incorrectMetaDesc = new XMLMetaReader().read(new FileInputStream(
+                        new File(METADATA_OUTPUT_PATH + "/" + moduleName + ".xml")),
+        ModuleType.CHECK);
+
+        ModuleDetails expectedMetaDesc = new XMLMetaReader().read(getClass().getClassLoader()
+                .getResourceAsStream("java/inputs/upper-ell-check/UpperEllCheck-correctedDesc.xml"),
+                ModuleType.CHECK);
+        assertEquals(expectedMetaDesc.getDescription(), incorrectMetaDesc.getDescription(), "This"
+                + " test fails to show the diff in description");
     }
 
-    private static String getFileOutputPath(String moduleName) {
-        return System.getProperty("user.dir") + "/src/test/resources/javadoc-scraper-output";
+    private static String getJavaFileInputPath(String moduleLocation) {
+        return System.getProperty("user.dir") + "/src/test/resources/java/inputs/" + moduleLocation + ".java";
     }
 
     private void checkModuleMeta(String moduleName, ModuleType moduleType) throws IOException, CheckstyleException {
         ModuleDetails expectedMeta = new XMLMetaReader().read(getClass().getClassLoader()
-                .getResourceAsStream(moduleName + ".xml"), moduleType);
+                .getResourceAsStream("java/inputs/" + moduleName + ".xml"), moduleType);
 
-        Main.main(getFileInputPath(moduleName), getFileOutputPath(moduleName));
-        ModuleDetails actualMeta =
-                new XMLMetaReader().read(new FileInputStream(new File(getFileOutputPath(moduleName) + "/" + moduleName + ".xml")),
-        moduleType);
+        Main.main(getJavaFileInputPath(moduleName),
+                METADATA_OUTPUT_PATH + "/" + moduleName.substring(0, moduleName.indexOf('/')) +
+                        "/temp");
+        ModuleDetails actualMeta = loadMetaFromFile(METADATA_OUTPUT_PATH + "/" + moduleName.substring(0, moduleName.indexOf('/')) +
+                        "/temp" + expectedMeta.getName() + ".xml", moduleType);
 
         assertEquals(expectedMeta.getDescription(), actualMeta.getDescription(), "Description "
-                + "doesn't macth: " + expectedMeta.getName());
+                + "doesn't match: " + expectedMeta.getName());
         assertEquals(expectedMeta.getFullQualifiedName(), actualMeta.getFullQualifiedName(),
                 "Fully qualified name doesn't match: " + expectedMeta.getName());
         assertEquals(expectedMeta.getParent(), actualMeta.getParent(),
@@ -71,4 +97,7 @@ public class JavadocMetadataScraperTest {
                 , "Violation message keys dont match: " + expectedMeta.getName());
     }
 
+    private static ModuleDetails loadMetaFromFile(String moduleLocation, ModuleType moduleType) throws FileNotFoundException {
+        return new XMLMetaReader().read(new FileInputStream(new File(moduleLocation)), moduleType);
+    }
 }
