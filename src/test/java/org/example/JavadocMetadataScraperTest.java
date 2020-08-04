@@ -37,9 +37,15 @@ public class JavadocMetadataScraperTest {
         checkModuleMeta("upper-ell-check/UpperEllCheck", ModuleType.CHECK);
     }
 
+    @Test
+    public void testExampleLessModuleDescription() throws Exception {
+        checkModuleMeta("upper-ell-check/ExampleLessUpperEllCheck", ModuleType.CHECK);
+    }
+
     /**
-     * This test shows how the presence of a "marker" is required to differentiate the examples
-     * section in absence of properties list e.g. UpperEllCheck.
+     * This test shows how the presence of a established and predefined "marker" ("To configure
+     * the check:") is required to differentiate the examples
+     * section in absence of properties list e.g. PropertyLessTranslationCheck.
      *
      * https://github.com/checkstyle/metadata-gen/issues/34 will be closed when this test passes.
      *
@@ -47,14 +53,15 @@ public class JavadocMetadataScraperTest {
      */
     @Test
     public void testNonPropertyModuleDescription() throws Exception {
-        final String moduleName = "upper-ell-check/UpperEllCheck";
-        Main.main(getJavaFileInputPath(moduleName), METADATA_OUTPUT_PATH + "/upper-ell-check/");
+        final String moduleName = "translation-check/PropertyLessTranslationCheck";
+        Main.main(getJavaFileInputPath(moduleName), METADATA_OUTPUT_PATH + "/translation-check/");
         ModuleDetails incorrectMetaDesc = new XMLMetaReader().read(new FileInputStream(
                         new File(METADATA_OUTPUT_PATH + "/" + moduleName + ".xml")),
         ModuleType.CHECK);
 
         ModuleDetails expectedMetaDesc = new XMLMetaReader().read(getClass().getClassLoader()
-                .getResourceAsStream("java/inputs/upper-ell-check/UpperEllCheck-correctedDesc.xml"),
+                .getResourceAsStream("java/inputs/translation-check/TranslationCheck"
+                        + ".xml"),
                 ModuleType.CHECK);
         assertEquals(expectedMetaDesc.getDescription(), incorrectMetaDesc.getDescription(), "This"
                 + " test fails to show the diff in description");

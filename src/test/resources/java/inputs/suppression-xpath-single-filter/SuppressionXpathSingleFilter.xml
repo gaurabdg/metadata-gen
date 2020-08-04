@@ -2,24 +2,26 @@
 
 <checkstyle-metadata>
   <module>
-    <filter name="SuppressionXpathSingleFilter"
-            fully-qualified-name="inputs.suppression-xpath-single-filter.SuppressionXpathSingleFilter"
-            parent="com.puppycrawl.tools.checkstyle.TreeWalker">
+    <filter name="SuppressionXpathSingleFilter" fully-qualified-name="inputs.suppression-xpath-single-filter.SuppressionXpathSingleFilter" parent="com.puppycrawl.tools.checkstyle.TreeWalker">
       <description><![CDATA[<p>
  Filter {@code SuppressionXpathSingleFilter} suppresses audit events for Checks
  violations in the specified file, class, checks, message, module id, and xpath.
- </p><p>
+ </p>
+ <p>
  Rationale: To allow users use suppressions configured in the same config with
  other modules. SuppressionFilter and SuppressionXpathFilter are require separate file.
- </p><p>
+ </p>
+ <p>
  Advice: If checkstyle configuration is used for several projects, single suppressions
  on common files/folders is better to put in checkstyle configuration as common rule.
  All suppression that are for specific file names is better to keep in project
  specific config file.
- </p><p>
+ </p>
+ <p>
  Attention: This filter only supports single suppression, and will need multiple
  instances if users wants to suppress multiple violations.
- </p><p>
+ </p>
+ <p>
  SuppressionXpathSingleFilter can suppress Checks that have Treewalker as parent module.
  </p>]]></description>
       <properties>
