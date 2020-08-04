@@ -24,6 +24,7 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
     private static final Pattern VALIDATION_TYPE_TAG
             = Pattern.compile("\\s.*Validation type is\\s.*");
     private static final Pattern DEFAULT_VALUE_TAG = Pattern.compile("\\s*Default value is:*.*");
+    private static final Pattern EXAMPLES_TAG = Pattern.compile("\\s*To configure the check:\\s*");
     private static final Pattern PARENT_TAG = Pattern.compile("\\s*Parent is\\s*");
     private static final Pattern VIOLATION_MESSAGES_TAG =
             Pattern.compile("\\s*Violation Message Keys:\\s*");
@@ -36,6 +37,10 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
     private ScrapeStatus currentStatus;
     private boolean toScan;
     private String descriptionText;
+    private DetailNode rootNode;
+    private int propertySectionStartIdx;
+    private int exampleSectionStartIdx;
+    private int parentSectionStartIdx;
 
     @Override
     public int[] getDefaultJavadocTokens() {
@@ -59,6 +64,9 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
             currentStatus = ScrapeStatus.DESCRIPTION;
             toScan = false;
             descriptionText = "";
+            propertySectionStartIdx = -1;
+            exampleSectionStartIdx = -1;
+            parentSectionStartIdx = -1;
 
             final String filePath = getFileContents().getFileName();
             moduleDetails.setName(filePath.substring(filePath.lastIndexOf('/') + 1,
@@ -76,6 +84,7 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
 
         if (ast.getType() == JavadocTokenTypes.JAVADOC
             && getParent(getBlockCommentAst()).getType() == TokenTypes.CLASS_DEF) {
+            rootNode = ast;
             toScan = true;
         }
         else if (ast.getType() == JavadocTokenTypes.SINCE_LITERAL) {
@@ -85,6 +94,7 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
 
     @Override
     public void finishJavadocTree(DetailNode rootAst) {
+        moduleDetails.setDescription(getDescriptionText());
          if (isTopLevelClassJavadoc()) {
              try {
                  new XMLMetaWriter().write(moduleDetails, getModuleType(getModuleSimpleName()));
@@ -102,22 +112,23 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
         if (ast.getType() == JavadocTokenTypes.PARAGRAPH) {
             if (getParentText(ast) != null) {
                 currentStatus = ScrapeStatus.PARENT;
-
+                parentSectionStartIdx = getParentIndexOf(ast);
                 moduleDetails.setParent(getParentText(ast));
-                if (moduleDetails.getDescription() == null) {
-                    moduleDetails.setDescription(descriptionText);
-                }
             }
             else if (isViolationMessagesText(ast)) {
                 currentStatus = ScrapeStatus.VIOLATION_MESSAGES;
             }
-            else if (currentStatus == ScrapeStatus.DESCRIPTION) {
-                descriptionText += constructSubTreeText(ast, 0, ast.getChildren().length - 1);
+            else if (isExamplesText(ast)) {
+                exampleSectionStartIdx = getParentIndexOf(ast);
             }
         }
         else if (ast.getType() == JavadocTokenTypes.LI){
             if (isPropertyList(ast)) {
                 currentStatus = ScrapeStatus.PROPERTY;
+
+                if (propertySectionStartIdx == -1) {
+                    propertySectionStartIdx = getParentIndexOf(ast);
+                }
 
                 moduleDetails.setDescription(descriptionText);
                 moduleDetails.addToProperties(createProperties(ast));
@@ -231,10 +242,30 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
     }
 
     /**
+     * Create the description text with starting index as 0 and ending index would be the first
+     * valid non zero index amongst in the order of {@code propertySectionStartIdx},
+     * {@code exampleSectionStartIdx} and {@code parentSectionStartIdx}.
+     *
+     * @return description text
+     */
+    private String getDescriptionText() {
+        int descriptionEndIdx;
+        if (propertySectionStartIdx != -1) {
+            descriptionEndIdx = propertySectionStartIdx;
+        }
+        else if (exampleSectionStartIdx != -1) {
+            descriptionEndIdx = exampleSectionStartIdx;
+        }
+        else {
+            descriptionEndIdx = parentSectionStartIdx;
+        }
+        return constructSubTreeText(rootNode, 0, descriptionEndIdx - 1);
+    }
+
+    /**
      * Create property default text, which is either normal property value or list of tokens
      *
      * @param nodeLi list item javadoc node
-     * @param propertyTypeTag property type javadoc node for reference
      * @return default property text
      */
     private static String getPropertyDefaultText(DetailNode nodeLi) {
@@ -332,6 +363,21 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
     }
 
     /**
+     * Traverse parents until we reach the root node (@code{JavadocTokenTypes.JAVADOC})
+     * child and return its index.
+     *
+     * @param node subtree child node
+     * @return root node child index
+     */
+    private static int getParentIndexOf(DetailNode node) {
+        DetailNode currNode = node;
+        while (currNode.getParent().getIndex() != -1) {
+            currNode = currNode.getParent();
+        }
+        return currNode.getIndex();
+    }
+
+    /**
      * Get module parent text from paragaraph javadoc node
      *
      * @param nodeParagraph paragraph javadoc node
@@ -392,6 +438,18 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
                             && child.getType() == TokenTypes.IDENT);
         return className.isPresent()
                 && getModuleSimpleName().equals(className.get().getText());
+    }
+
+    /**
+     * Checks whether the paragraph node corresponds to the example section.
+     *
+     * @param ast javadoc paragraph node
+     * @return true if the section matches the example section marker
+     */
+    private static boolean isExamplesText(DetailNode ast) {
+        return EXAMPLES_TAG.matcher(
+                getFirstChildOfType(ast, JavadocTokenTypes.TEXT, 0)
+                        .getText()).matches();
     }
 
     /**

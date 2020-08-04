@@ -2,14 +2,16 @@
 
 <checkstyle-metadata>
   <module>
-    <check name="UpperEllCheck" fully-qualified-name="example-pkg.UpperEllCheck"
+    <check name="ExampleLessUpperEllCheck"
+           fully-qualified-name="inputs.upper-ell-check.ExampleLessUpperEllCheck"
            parent="com.puppycrawl.tools.checkstyle.TreeWalker">
       <description><![CDATA[<p>
  Checks that long constants are defined with an upper ell. That is {@code 'L'}
  and not {@code 'l'}. This is in accordance with the Java Language Specification,
  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-3.html#jls-3.10.1">
  Section 3.10.1</a>.
- </p><p>
+ </p>
+ <p>
  Rationale: The lower-case ell {@code 'l'} looks a lot like {@code 1}.
  </p>]]></description>
       <message-keys>
