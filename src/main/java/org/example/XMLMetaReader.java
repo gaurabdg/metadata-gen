@@ -34,36 +34,40 @@ public class XMLMetaReader {
         Element root = document.getDocumentElement();
         Element element = getDirectChildsByTag(root, "module").get(0);
         Element module = null;
+        ModuleDetails moduleDetails = new ModuleDetails();
         if (moduleType == ModuleType.CHECK) {
             module = getDirectChildsByTag(element, "check").get(0);
+            moduleDetails.setModuleType(ModuleType.CHECK);
         }
         else if (moduleType == ModuleType.FILTER) {
             module = getDirectChildsByTag(element, "filter").get(0);
+            moduleDetails.setModuleType(ModuleType.FILTER);
         }
         else if (moduleType == ModuleType.FILEFILTER) {
             module = getDirectChildsByTag(element, "file-filter").get(0);
+            moduleDetails.setModuleType(ModuleType.FILEFILTER);
         }
-        return createModule(module);
+        return createModule(module, moduleDetails);
     }
 
-    public static ModuleDetails createModule(Element mod) {
-        ModuleDetails check = new ModuleDetails();
-        check.setName(getAttributeValue(mod, "name"));
-        check.setFullQualifiedName(getAttributeValue(mod, "fully-qualified-name"));
-        check.setParent(getAttributeValue(mod, "parent"));
-        check.setDescription(getDirectChildsByTag(mod, "description").get(0).getFirstChild().getNodeValue());
+    public static ModuleDetails createModule(Element mod, ModuleDetails moduleDetails) {
+
+        moduleDetails.setName(getAttributeValue(mod, "name"));
+        moduleDetails.setFullQualifiedName(getAttributeValue(mod, "fully-qualified-name"));
+        moduleDetails.setParent(getAttributeValue(mod, "parent"));
+        moduleDetails.setDescription(getDirectChildsByTag(mod, "description").get(0).getFirstChild().getNodeValue());
         List<Element> properties = getDirectChildsByTag(mod, "properties") ;
         if (!properties.isEmpty()) {
             List<ModulePropertyDetails> modulePropertyDetailsList =
                     createProperties(properties.get(0));
-            check.addToProperties(modulePropertyDetailsList);
+            moduleDetails.addToProperties(modulePropertyDetailsList);
         }
         List<String> messageKeys = getListContentByAttribute(mod, "message-keys", "message-key",
                 "key");
         if (messageKeys != null) {
-            check.addToViolationMessages(messageKeys);
+            moduleDetails.addToViolationMessages(messageKeys);
         }
-        return check;
+        return moduleDetails;
     }
 
     public static List<ModulePropertyDetails> createProperties(Element properties) {

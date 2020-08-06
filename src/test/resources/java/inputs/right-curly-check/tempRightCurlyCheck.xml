@@ -2,7 +2,7 @@
 
 <checkstyle-metadata>
   <module>
-    <check name="RightCurlyCheck" fully-qualified-name="inputs.right-curly-check.RightCurlyCheck" parent="com.puppycrawl.tools.checkstyle.TreeWalker">
+    <check name="RightCurly" fully-qualified-name="inputs.right-curly-check.RightCurlyCheck" parent="com.puppycrawl.tools.checkstyle.TreeWalker">
       <description><![CDATA[<p>
  Checks the placement of right curly braces ({@code '}'}) for code blocks. This check supports
  if-else, try-catch-finally blocks, while-loops, for-loops,

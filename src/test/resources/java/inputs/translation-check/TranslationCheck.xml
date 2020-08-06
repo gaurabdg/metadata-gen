@@ -2,7 +2,7 @@
 
 <checkstyle-metadata>
   <module>
-    <check name="TranslationCheck" fully-qualified-name="inputs.translation-check.TranslationCheck" parent="com.puppycrawl.tools.checkstyle.Checker">
+    <check name="Translation" fully-qualified-name="inputs.translation-check.TranslationCheck" parent="com.puppycrawl.tools.checkstyle.Checker">
       <description><![CDATA[<p>
  Ensures the correct translation of code by checking property files for consistency
  regarding their keys. Two property files describing one and the same context

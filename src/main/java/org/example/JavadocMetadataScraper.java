@@ -69,10 +69,14 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
             parentSectionStartIdx = -1;
 
             final String filePath = getFileContents().getFileName();
-            moduleDetails.setName(filePath.substring(filePath.lastIndexOf('/') + 1,
-                    filePath.length() - 5));
+            String moduleName = getModuleSimpleName();
+            if (moduleName.contains("Check")) {
+                moduleName = moduleName.substring(0, moduleName.indexOf("Check"));
+            }
+            moduleDetails.setName(moduleName);
             moduleDetails.setFullQualifiedName(PACKAGE_NAME_CONVERSION_CLEAN_UP.matcher(filePath.substring(filePath.indexOf("java") + 5,
                     filePath.length() - 5)).replaceAll("."));
+            moduleDetails.setModuleType(getModuleType(moduleName));
         }
     }
 
@@ -97,7 +101,7 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
         moduleDetails.setDescription(getDescriptionText());
          if (isTopLevelClassJavadoc()) {
              try {
-                 new XMLMetaWriter().write(moduleDetails, getModuleType(getModuleSimpleName()));
+                 new XMLMetaWriter().write(moduleDetails);
              } catch (IOException ignored) {}
          }
     }
@@ -403,14 +407,14 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
     private ModuleType getModuleType(String fileName) {
         final String simpleModuleName = getModuleSimpleName();
         ModuleType result = null;
-        if (simpleModuleName.endsWith("Check") || "SuppressWarningsHolder".equals(simpleModuleName)) {
-            result = ModuleType.CHECK;
-        }
-        else if (simpleModuleName.endsWith("FileFilter")) {
+        if (simpleModuleName.endsWith("FileFilter")) {
             result = ModuleType.FILEFILTER;
         }
         else if (simpleModuleName.endsWith("Filter")) {
             result = ModuleType.FILTER;
+        }
+        else {
+            result = ModuleType.CHECK;
         }
         return result;
     }
