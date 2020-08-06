@@ -10,10 +10,11 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 
 public class XMLMetaWriter {
-    public void write(ModuleDetails moduleDetails, ModuleType moduleType) throws IOException {
+    public void write(ModuleDetails moduleDetails) throws IOException {
         Document document = DocumentHelper.createDocument();
         Element root = document.addElement("checkstyle-metadata").addElement("module");
         Element checkModule = null;
+        ModuleType moduleType = moduleDetails.getModuleType();
         if (moduleType == ModuleType.CHECK) {
             checkModule = root.addElement("check");
         }
@@ -48,8 +49,12 @@ public class XMLMetaWriter {
         }
 
         OutputFormat format = OutputFormat.createPrettyPrint();
+        String moduleName = moduleDetails.getName();
+        if (moduleDetails.getModuleType() == ModuleType.CHECK) {
+            moduleName += "Check";
+        }
         XMLWriter writer =
-                new XMLWriter(new FileOutputStream(Main.outputRootPath + moduleDetails.getName() + ".xml"),
+                new XMLWriter(new FileOutputStream(Main.outputRootPath + moduleName + ".xml"),
                         format);
         writer.write(document);
     }

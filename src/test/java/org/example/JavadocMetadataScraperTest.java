@@ -78,9 +78,15 @@ public class JavadocMetadataScraperTest {
         Main.main(getJavaFileInputPath(moduleName),
                 METADATA_OUTPUT_PATH + "/" + moduleName.substring(0, moduleName.indexOf('/')) +
                         "/temp");
+        String simpleModuleName = expectedMeta.getName();
+        if (expectedMeta.getModuleType() == ModuleType.CHECK) {
+            simpleModuleName += "Check";
+        }
         ModuleDetails actualMeta = loadMetaFromFile(METADATA_OUTPUT_PATH + "/" + moduleName.substring(0, moduleName.indexOf('/')) +
-                        "/temp" + expectedMeta.getName() + ".xml", moduleType);
+                        "/temp" + simpleModuleName + ".xml", moduleType);
 
+        assertEquals(expectedMeta.getName(), actualMeta.getName(), "Description "
+                + "doesn't match: " + expectedMeta.getName());
         assertEquals(expectedMeta.getDescription(), actualMeta.getDescription(), "Description "
                 + "doesn't match: " + expectedMeta.getName());
         assertEquals(expectedMeta.getFullQualifiedName(), actualMeta.getFullQualifiedName(),

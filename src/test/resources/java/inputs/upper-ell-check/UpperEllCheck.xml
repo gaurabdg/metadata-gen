@@ -2,7 +2,7 @@
 
 <checkstyle-metadata>
   <module>
-    <check name="UpperEllCheck" fully-qualified-name="inputs.upper-ell-check.UpperEllCheck" parent="com.puppycrawl.tools.checkstyle.TreeWalker">
+    <check name="UpperEll" fully-qualified-name="inputs.upper-ell-check.UpperEllCheck" parent="com.puppycrawl.tools.checkstyle.TreeWalker">
       <description><![CDATA[<p>
  Checks that long constants are defined with an upper ell. That is {@code 'L'}
  and not {@code 'l'}. This is in accordance with the Java Language Specification,

@@ -2,7 +2,7 @@
 
 <checkstyle-metadata>
   <module>
-    <check name="EmptyBlockCheck" fully-qualified-name="com.puppycrawl.tools.checkstyle.checks.blocks.EmptyBlockCheck" parent="com.puppycrawl.tools.checkstyle.TreeWalker">
+    <check name="EmptyBlock" fully-qualified-name="com.puppycrawl.tools.checkstyle.checks.blocks.EmptyBlockCheck" parent="com.puppycrawl.tools.checkstyle.TreeWalker">
       <description><![CDATA[<p>
  Checks for empty blocks. This check does not validate sequential blocks.
  </p>
