@@ -52,7 +52,9 @@ public final class Main {
                             .filter(fileName -> (fileName.endsWith("SuppressWarningsHolder.java")
                                     || fileName.endsWith("Check.java")
                                     || fileName.endsWith("Filter.java"))
-                                    && !fileName.contains("Abstract"))
+                                    && (fileName.endsWith("AbstractClassNameCheck.java")
+                                    || !fileName.substring(fileName.lastIndexOf('/') + 1).startsWith(
+                                            "Abstract")))
                             .map(File::new)
                             .collect(Collectors.toList()));
                 }
