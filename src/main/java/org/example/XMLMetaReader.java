@@ -122,9 +122,16 @@ public class XMLMetaReader {
     public List<ModuleDetails> readAllModules() {
         Set<String> standardModuleFileNames =
                 new Reflections("com.puppycrawl.tools.checkstyle.meta", new ResourcesScanner()).getResources(Pattern.compile(".*\\.xml"));
+        Set<String> thirdPartyModuleFileNames =
+                new Reflections(null, new ResourcesScanner()).getResources(Pattern.compile(
+                        ".*checkstylemeta-.*\\.xml"));
+
+        Set<String> allMetadataSources = new HashSet<>();
+        allMetadataSources.addAll(standardModuleFileNames);
+        allMetadataSources.addAll(thirdPartyModuleFileNames);
         List<ModuleDetails> result = new ArrayList<>();
 
-        standardModuleFileNames.forEach(fileName -> {
+        allMetadataSources.forEach(fileName -> {
             ModuleType moduleType;
             if (fileName.endsWith("FileFilter.xml")) {
                 moduleType = ModuleType.FILEFILTER;
