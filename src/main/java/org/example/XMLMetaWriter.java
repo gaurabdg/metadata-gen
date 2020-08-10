@@ -2,8 +2,6 @@ package org.example;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.regex.Pattern;
 
 import org.dom4j.Document;
@@ -56,10 +54,21 @@ public class XMLMetaWriter {
         OutputFormat format = OutputFormat.createPrettyPrint();
 
         String moduleFilePath = FILEPATH_CONVERSION.matcher(moduleDetails.getFullQualifiedName()).replaceAll("/");
-        int idxOfCheckstyle = moduleFilePath.indexOf("checkstyle") + "checkstyle".length();
-        String modifiedPath = Main.outputRootPath + moduleFilePath.substring(0, idxOfCheckstyle)
-                + "/meta/" + moduleFilePath.substring(idxOfCheckstyle + 1) + ".xml";
-
+        String modifiedPath;
+        if (moduleFilePath.contains("com/puppycrawl")) {
+            int idxOfCheckstyle = moduleFilePath.indexOf("checkstyle") + "checkstyle".length();
+            // make sure all folders are created
+            modifiedPath = Main.outputRootPath + moduleFilePath.substring(0, idxOfCheckstyle)
+                    + "/meta/" + moduleFilePath.substring(idxOfCheckstyle + 1) + ".xml";
+        }
+        else {
+            String moduleName = moduleDetails.getName();
+            if (moduleDetails.getModuleType() == ModuleType.CHECK) {
+                moduleName += "Check";
+            }
+            modifiedPath = Main.outputRootPath + "checkstylemeta-" + moduleName +
+                    ".xml";
+        }
         XMLWriter writer = new XMLWriter(new FileOutputStream(modifiedPath), format);
         writer.write(document);
     }
