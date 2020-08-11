@@ -24,7 +24,8 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
     private static final Pattern VALIDATION_TYPE_TAG
             = Pattern.compile("\\s.*Validation type is\\s.*");
     private static final Pattern DEFAULT_VALUE_TAG = Pattern.compile("\\s*Default value is:*.*");
-    private static final Pattern EXAMPLES_TAG = Pattern.compile("\\s*To configure the check:\\s*");
+    private static final Pattern EXAMPLES_TAG
+            = Pattern.compile("\\s*To configure the (default )?check.*");
     private static final Pattern PARENT_TAG = Pattern.compile("\\s*Parent is\\s*");
     private static final Pattern VIOLATION_MESSAGES_TAG =
             Pattern.compile("\\s*Violation Message Keys:\\s*");
