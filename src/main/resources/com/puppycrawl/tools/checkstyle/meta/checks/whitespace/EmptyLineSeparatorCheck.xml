@@ -30,7 +30,7 @@
           <description><![CDATA[Allow multiple
  empty lines inside class members.]]></description>
         </property>
-        <property name="tokens" type="java.lang.String[]" default-value="PACKAGE_DEF,IMPORT,STATIC_IMPORT,CLASS_DEF,INTERFACE_DEF,ENUM_DEF,METHOD_DEF,STATIC_INIT,INSTANCE_INIT,CTOR_DEF,VARIABLE_DEF" validation-type="tokenSet">
+        <property name="tokens" type="java.lang.String[]" default-value="PACKAGE_DEF,IMPORT,STATIC_IMPORT,CLASS_DEF,INTERFACE_DEF,ENUM_DEF,METHOD_DEF,STATIC_INIT,INSTANCE_INIT,CTOR_DEF,VARIABLE_DEF,RECORD_DEF,COMPACT_CTOR_DEF" validation-type="tokenSet">
           <description><![CDATA[tokens to check]]></description>
         </property>
       </properties>
