@@ -2,10 +2,13 @@ package org.example;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -31,7 +34,7 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
             Pattern.compile("\\s*Violation Message Keys:\\s*");
     private static final Pattern TOKEN_TEXT_PATTERN = Pattern.compile("([A-Z]+_*)+[A-Z]+");
     private static final Pattern DESC_CLEAN = Pattern.compile("-", Pattern.LITERAL);
-    private static final Pattern PACKAGE_NAME_CONVERSION_CLEAN_UP = Pattern.compile("/");
+    private static final Pattern PACKAGE_NAME_CONVERSION_CLEAN_UP = Pattern.compile("[\\/]");
     private static final Pattern PATTERN_QUOTES_REMOVAL = Pattern.compile("\"");
 
     private ModuleDetails moduleDetails;
@@ -75,8 +78,7 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
                 moduleName = moduleName.substring(0, moduleName.indexOf("Check"));
             }
             moduleDetails.setName(moduleName);
-            moduleDetails.setFullQualifiedName(PACKAGE_NAME_CONVERSION_CLEAN_UP.matcher(filePath.substring(filePath.indexOf("java") + 5,
-                    filePath.length() - 5)).replaceAll("."));
+            moduleDetails.setFullQualifiedName(getPackageName(filePath));
             moduleDetails.setModuleType(getModuleType(moduleName));
         }
     }
@@ -428,8 +430,29 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
      */
     private String getModuleSimpleName() {
         final String fullFileName = getFileContents().getFileName();
-        return fullFileName.substring(fullFileName.lastIndexOf('/') + 1,
-                    fullFileName.length() - 5);
+        final String[] pathTokens = PACKAGE_NAME_CONVERSION_CLEAN_UP.split(fullFileName);
+        final String fileName = pathTokens[pathTokens.length - 1];
+        return fileName.substring(0, fileName.length() - 5);
+    }
+
+    /**
+     * Retrieve package name of module from the absolute file path.
+     *
+     * @param filePath absolute file path
+     * @return package name
+     */
+    private String getPackageName(String filePath) {
+        Deque<String> result = new ArrayDeque<>();
+        String[] filePathTokens = PACKAGE_NAME_CONVERSION_CLEAN_UP.split(filePath);
+        for (int i = filePathTokens.length - 1; i >=0; i--) {
+            if ("java".equals(filePathTokens[i]) || "resources".equals(filePathTokens[i])) {
+                break;
+            }
+            result.addFirst(filePathTokens[i]);
+        }
+        String fileName = result.removeLast();
+        result.addLast(fileName.substring(0, fileName.length() - 5));
+        return String.join(".", result);
     }
 
     /**
