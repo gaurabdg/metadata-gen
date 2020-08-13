@@ -47,8 +47,6 @@ public class JavadocMetadataScraperTest {
      * the check:") is required to differentiate the examples
      * section in absence of properties list e.g. PropertyLessTranslationCheck.
      *
-     * https://github.com/checkstyle/metadata-gen/issues/34 will be closed when this test passes.
-     *
      * @throws Exception exception
      */
     @Test
@@ -56,8 +54,9 @@ public class JavadocMetadataScraperTest {
         final String moduleName = "translation-check/PropertyLessTranslationCheck";
         Main.main(getJavaFileInputPath(moduleName), METADATA_OUTPUT_PATH + "/translation-check/");
         ModuleDetails incorrectMetaDesc = new XMLMetaReader().read(new FileInputStream(
-                        new File(METADATA_OUTPUT_PATH + "/" + moduleName + ".xml")),
-        ModuleType.CHECK);
+                        new File(METADATA_OUTPUT_PATH + "/"
+                                + "translation-check/checkstylemeta-PropertyLessTranslationCheck" +
+                                ".xml")), ModuleType.CHECK);
 
         ModuleDetails expectedMetaDesc = new XMLMetaReader().read(getClass().getClassLoader()
                 .getResourceAsStream("java/inputs/translation-check/TranslationCheck"
@@ -77,13 +76,13 @@ public class JavadocMetadataScraperTest {
 
         Main.main(getJavaFileInputPath(moduleName),
                 METADATA_OUTPUT_PATH + "/" + moduleName.substring(0, moduleName.indexOf('/')) +
-                        "/temp");
+                        "/");
         String simpleModuleName = expectedMeta.getName();
         if (expectedMeta.getModuleType() == ModuleType.CHECK) {
             simpleModuleName += "Check";
         }
         ModuleDetails actualMeta = loadMetaFromFile(METADATA_OUTPUT_PATH + "/" + moduleName.substring(0, moduleName.indexOf('/')) +
-                        "/temp" + simpleModuleName + ".xml", moduleType);
+                        "/checkstylemeta-" + simpleModuleName + ".xml", moduleType);
 
         assertEquals(expectedMeta.getName(), actualMeta.getName(), "Description "
                 + "doesn't match: " + expectedMeta.getName());

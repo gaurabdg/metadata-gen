@@ -124,7 +124,9 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
                 currentStatus = ScrapeStatus.VIOLATION_MESSAGES;
             }
             else if (isExamplesText(ast)) {
-                exampleSectionStartIdx = getParentIndexOf(ast);
+                if (exampleSectionStartIdx == -1) {
+                    exampleSectionStartIdx = getParentIndexOf(ast);
+                }
             }
         }
         else if (ast.getType() == JavadocTokenTypes.LI){

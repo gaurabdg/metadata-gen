@@ -40,11 +40,16 @@
           <description><![CDATA[Specify the maximum allowed number of
  non commenting lines in a file including all top level and nested classes.]]></description>
         </property>
+        <property name="recordMaximum" type="int" default-value="150">
+          <description><![CDATA[Specify the maximum allowed number of
+ non commenting lines in a record.]]></description>
+        </property>
       </properties>
       <message-keys>
         <message-key key="ncss.class"/>
         <message-key key="ncss.file"/>
         <message-key key="ncss.method"/>
+        <message-key key="ncss.record"/>
       </message-keys>
     </check>
   </module>
