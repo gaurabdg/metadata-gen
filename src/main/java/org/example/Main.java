@@ -49,12 +49,9 @@ public final class Main {
             for (String folder : moduleFolders) {
                 try (Stream<Path> files = Files.walk(Paths.get(path + "/" + folder))) {
                     validFiles.addAll(files.map(Path::toString)
-                            .filter(fileName -> (fileName.endsWith("SuppressWarningsHolder.java")
+                            .filter(fileName -> fileName.endsWith("SuppressWarningsHolder.java")
                                     || fileName.endsWith("Check.java")
                                     || fileName.endsWith("Filter.java"))
-                                    && (fileName.endsWith("AbstractClassNameCheck.java")
-                                    || !fileName.substring(fileName.lastIndexOf('/') + 1).startsWith(
-                                            "Abstract")))
                             .map(File::new)
                             .collect(Collectors.toList()));
                 }

@@ -69,8 +69,10 @@ public class XMLMetaWriter {
             modifiedPath = Main.outputRootPath + "checkstylemeta-" + moduleName +
                     ".xml";
         }
-        XMLWriter writer = new XMLWriter(new FileOutputStream(modifiedPath), format);
-        writer.write(document);
+        if (!moduleDetails.getDescription().isEmpty()) {
+            XMLWriter writer = new XMLWriter(new FileOutputStream(modifiedPath), format);
+            writer.write(document);
+        }
     }
 }
 
