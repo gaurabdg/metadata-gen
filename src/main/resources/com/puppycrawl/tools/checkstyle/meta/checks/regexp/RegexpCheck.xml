@@ -60,7 +60,7 @@
         <property name="format" type="java.util.regex.Pattern" default-value="^$">
           <description><![CDATA[Specify the pattern to match against.]]></description>
         </property>
-        <property name="message" type="java.lang.String" default-value="null">
+        <property name="message" type="java.lang.String">
           <description><![CDATA[Specify message which is used to notify about
  violations, if empty then the default (hardcoded) message is used.]]></description>
         </property>

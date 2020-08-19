@@ -13,7 +13,7 @@
  If both options are specified - they are applied by <b>any of them is matching</b>.
  </p>]]></description>
       <properties>
-        <property name="exceptionVariableName" type="java.util.regex.Pattern" default-value="^$ (empty)">
+        <property name="exceptionVariableName" type="java.util.regex.Pattern" default-value="^$">
           <description><![CDATA[Specify the RegExp for the name of the variable
  associated with exception. If check meets variable name matching specified value  empty
  block is suppressed.]]></description>

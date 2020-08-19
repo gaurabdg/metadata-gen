@@ -10,7 +10,7 @@
  You can also define aliases for check names that need to be suppressed.
  </p>]]></description>
       <properties>
-        <property name="aliasList" type="java.lang.String[]" default-value="null">
+        <property name="aliasList" type="java.lang.String[]">
           <description><![CDATA[Specify aliases for check names that can be used in code
  within {@code SuppressWarnings}.]]></description>
         </property>

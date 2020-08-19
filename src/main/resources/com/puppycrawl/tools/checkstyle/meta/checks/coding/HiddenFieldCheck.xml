@@ -42,7 +42,7 @@
  <em>ignoreSetter</em> is set to true.
  </p>]]></description>
       <properties>
-        <property name="ignoreFormat" type="java.util.regex.Pattern" default-value="null">
+        <property name="ignoreFormat" type="java.util.regex.Pattern">
           <description><![CDATA[Define the RegExp for names of variables
  and parameters to ignore.]]></description>
         </property>

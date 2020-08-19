@@ -25,23 +25,23 @@
  SuppressionXpathSingleFilter can suppress Checks that have Treewalker as parent module.
  </p>]]></description>
       <properties>
-        <property name="files" type="java.lang.String" default-value="null" validation-type="java.util.regex.Pattern">
+        <property name="files" type="java.lang.String" validation-type="java.util.regex.Pattern">
           <description><![CDATA[Define a Regular Expression matched against the file
  name associated with an audit event.]]></description>
         </property>
-        <property name="checks" type="java.lang.String" default-value="null" validation-type="java.util.regex.Pattern">
+        <property name="checks" type="java.lang.String" validation-type="java.util.regex.Pattern">
           <description><![CDATA[Define a Regular Expression matched against the name
  of the check associated with an audit event.]]></description>
         </property>
-        <property name="message" type="java.lang.String" default-value="null" validation-type="java.util.regex.Pattern">
+        <property name="message" type="java.lang.String" validation-type="java.util.regex.Pattern">
           <description><![CDATA[Define a Regular Expression matched against the message
  of the check associated with an audit event.]]></description>
         </property>
-        <property name="id" type="java.lang.String" default-value="null">
+        <property name="id" type="java.lang.String">
           <description><![CDATA[Define a string matched against the ID of the check
  associated with an audit event.]]></description>
         </property>
-        <property name="query" type="java.lang.String" default-value="null">
+        <property name="query" type="java.lang.String">
           <description><![CDATA[Define a string xpath query.]]></description>
         </property>
       </properties>

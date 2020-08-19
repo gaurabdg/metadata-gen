@@ -50,10 +50,10 @@
         <property name="checkFormat" type="java.lang.String" default-value=".*">
           <description><![CDATA[Specify check pattern to suppress.]]></description>
         </property>
-        <property name="messageFormat" type="java.lang.String" default-value="null">
+        <property name="messageFormat" type="java.lang.String">
           <description><![CDATA[Specify message pattern to suppress.]]></description>
         </property>
-        <property name="idFormat" type="java.lang.String" default-value="null">
+        <property name="idFormat" type="java.lang.String">
           <description><![CDATA[Specify check ID pattern to suppress.]]></description>
         </property>
       </properties>

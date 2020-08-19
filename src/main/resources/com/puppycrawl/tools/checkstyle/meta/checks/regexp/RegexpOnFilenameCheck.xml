@@ -44,10 +44,10 @@
  messages.
  </p>]]></description>
       <properties>
-        <property name="folderPattern" type="java.util.regex.Pattern" default-value="null">
+        <property name="folderPattern" type="java.util.regex.Pattern">
           <description><![CDATA[Specify the regular expression to match the folder path against.]]></description>
         </property>
-        <property name="fileNamePattern" type="java.util.regex.Pattern" default-value="null">
+        <property name="fileNamePattern" type="java.util.regex.Pattern">
           <description><![CDATA[Specify the regular expression to match the file name against.]]></description>
         </property>
         <property name="match" type="boolean" default-value="true">

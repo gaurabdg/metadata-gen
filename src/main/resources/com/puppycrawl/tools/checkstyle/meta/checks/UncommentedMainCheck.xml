@@ -14,7 +14,7 @@
  should be removed or commented out of the sources.
  </p>]]></description>
       <properties>
-        <property name="excludedClasses" type="java.util.regex.Pattern" default-value="^$ (empty)">
+        <property name="excludedClasses" type="java.util.regex.Pattern" default-value="^$">
           <description><![CDATA[Specify pattern for qualified names of
  classes which are allowed to have a {@code main} method.]]></description>
         </property>

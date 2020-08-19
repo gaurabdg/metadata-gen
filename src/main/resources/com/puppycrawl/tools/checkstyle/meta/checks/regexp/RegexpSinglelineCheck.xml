@@ -15,7 +15,7 @@
         <property name="format" type="java.lang.String" default-value="$.">
           <description><![CDATA[Specify the format of the regular expression to match.]]></description>
         </property>
-        <property name="message" type="java.lang.String" default-value="null">
+        <property name="message" type="java.lang.String">
           <description><![CDATA[Specify the message which is used to notify about
  violations, if empty then default (hardcoded) message is used.]]></description>
         </property>

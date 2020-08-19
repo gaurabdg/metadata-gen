@@ -79,7 +79,9 @@ public class XMLMetaReader {
             Element prop = (Element) propertyList.item(i);
             propertyDetails.setName(getAttributeValue(prop, "name"));
             propertyDetails.setType(getAttributeValue(prop, "type"));
-            propertyDetails.setDefaultValue(getAttributeValue(prop, "default-value"));
+            if (prop.hasAttribute("default-value")) {
+                propertyDetails.setDefaultValue(getAttributeValue(prop, "default-value"));
+            }
             if (prop.hasAttribute("validation-type")) {
                 propertyDetails.setValidationType(getAttributeValue(prop, "validation-type"));
             }

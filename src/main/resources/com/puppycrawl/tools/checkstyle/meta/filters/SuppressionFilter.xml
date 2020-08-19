@@ -80,7 +80,7 @@
  SuppressionFilter can suppress Checks that have Treewalker or Checker as parent module.
  </p>]]></description>
       <properties>
-        <property name="file" type="java.lang.String" default-value="null">
+        <property name="file" type="java.lang.String">
           <description><![CDATA[Specify the location of the <em>suppressions XML document</em> file.]]></description>
         </property>
         <property name="optional" type="boolean" default-value="false">

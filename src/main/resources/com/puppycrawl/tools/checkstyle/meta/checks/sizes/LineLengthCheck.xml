@@ -29,7 +29,7 @@
         <property name="fileExtensions" type="java.lang.String[]" default-value="">
           <description><![CDATA[Specify file extensions that are accepted.]]></description>
         </property>
-        <property name="ignorePattern" type="java.util.regex.Pattern" default-value="^$ (empty)">
+        <property name="ignorePattern" type="java.util.regex.Pattern" default-value="^$">
           <description><![CDATA[Specify pattern for lines to ignore.]]></description>
         </property>
         <property name="max" type="int" default-value="80">

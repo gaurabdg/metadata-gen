@@ -8,7 +8,7 @@
  By default no tokens are specified.
  </p>]]></description>
       <properties>
-        <property name="format" type="java.lang.String" default-value="^$ (empty)" validation-type="java.util.regex.Pattern">
+        <property name="format" type="java.lang.String" default-value="^$" validation-type="java.util.regex.Pattern">
           <description><![CDATA[Define the RegExp for illegal pattern.]]></description>
         </property>
         <property name="ignoreCase" type="boolean" default-value="false">

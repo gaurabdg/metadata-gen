@@ -24,14 +24,14 @@
         <property name="scope" type="com.puppycrawl.tools.checkstyle.api.Scope" default-value="private">
           <description><![CDATA[Specify the visibility scope where Javadoc comments are checked.]]></description>
         </property>
-        <property name="excludeScope" type="com.puppycrawl.tools.checkstyle.api.Scope" default-value="null">
+        <property name="excludeScope" type="com.puppycrawl.tools.checkstyle.api.Scope">
           <description><![CDATA[Specify the visibility scope where Javadoc
  comments are not checked.]]></description>
         </property>
-        <property name="authorFormat" type="java.util.regex.Pattern" default-value="null">
+        <property name="authorFormat" type="java.util.regex.Pattern">
           <description><![CDATA[Specify the pattern for {@code @author} tag.]]></description>
         </property>
-        <property name="versionFormat" type="java.util.regex.Pattern" default-value="null">
+        <property name="versionFormat" type="java.util.regex.Pattern">
           <description><![CDATA[Specify the pattern for {@code @version} tag.]]></description>
         </property>
         <property name="allowMissingParamTags" type="boolean" default-value="false">

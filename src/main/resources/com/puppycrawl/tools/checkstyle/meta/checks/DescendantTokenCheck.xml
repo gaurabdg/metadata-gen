@@ -21,24 +21,24 @@
         <property name="minimumDepth" type="int" default-value="0">
           <description><![CDATA[Specify the minimum depth for descendant counts.]]></description>
         </property>
-        <property name="maximumDepth" type="int" default-value="java.lang.Integer.MAX_VALUE">
+        <property name="maximumDepth" type="int" default-value="2147483647">
           <description><![CDATA[Specify the maximum depth for descendant counts.]]></description>
         </property>
         <property name="minimumNumber" type="int" default-value="0">
           <description><![CDATA[Specify a minimum count for descendants.]]></description>
         </property>
-        <property name="maximumNumber" type="int" default-value="java.lang.Integer.MAX_VALUE">
+        <property name="maximumNumber" type="int" default-value="2147483647">
           <description><![CDATA[Specify a maximum count for descendants.]]></description>
         </property>
         <property name="sumTokenCounts" type="boolean" default-value="false">
           <description><![CDATA[Control whether the number of tokens found
  should be calculated from the sum of the individual token counts.]]></description>
         </property>
-        <property name="minimumMessage" type="java.lang.String" default-value="null">
+        <property name="minimumMessage" type="java.lang.String">
           <description><![CDATA[Define the violation message
  when the minimum count is not reached.]]></description>
         </property>
-        <property name="maximumMessage" type="java.lang.String" default-value="null">
+        <property name="maximumMessage" type="java.lang.String">
           <description><![CDATA[Define the violation message
  when the maximum count is exceeded.]]></description>
         </property>

@@ -9,10 +9,10 @@
  Property tagSeverity is used for severity of events when the tag exists.
  </p>]]></description>
       <properties>
-        <property name="tag" type="java.lang.String" default-value="null">
+        <property name="tag" type="java.lang.String">
           <description><![CDATA[Specify the name of tag.]]></description>
         </property>
-        <property name="tagFormat" type="java.util.regex.Pattern" default-value="null">
+        <property name="tagFormat" type="java.util.regex.Pattern">
           <description><![CDATA[Specify the regexp to match tag content.]]></description>
         </property>
         <property name="tagSeverity" type="com.puppycrawl.tools.checkstyle.api.SeverityLevel" default-value="info">

@@ -25,27 +25,27 @@
  Checker as parent module.
  </p>]]></description>
       <properties>
-        <property name="files" type="java.util.regex.Pattern" default-value="null">
+        <property name="files" type="java.util.regex.Pattern">
           <description><![CDATA[Define the RegExp for matching against the file name associated with
  an audit event.]]></description>
         </property>
-        <property name="checks" type="java.lang.String" default-value="null" validation-type="java.util.regex.Pattern">
+        <property name="checks" type="java.lang.String" validation-type="java.util.regex.Pattern">
           <description><![CDATA[Define the RegExp for matching against the name of the check
  associated with an audit event.]]></description>
         </property>
-        <property name="message" type="java.util.regex.Pattern" default-value="null">
+        <property name="message" type="java.util.regex.Pattern">
           <description><![CDATA[Define the RegExp for matching against the message of the check
  associated with an audit event.]]></description>
         </property>
-        <property name="id" type="java.lang.String" default-value="null">
+        <property name="id" type="java.lang.String">
           <description><![CDATA[Specify a string matched against the ID of the check associated with
  an audit event.]]></description>
         </property>
-        <property name="lines" type="java.lang.String" default-value="null">
+        <property name="lines" type="java.lang.String">
           <description><![CDATA[Specify a commaseparated list of values, where each value is an
  integer or a range of integers denoted by integerinteger.]]></description>
         </property>
-        <property name="columns" type="java.lang.String" default-value="null">
+        <property name="columns" type="java.lang.String">
           <description><![CDATA[Specify a commaseparated list of values, where each value is an
  integer or a range of integers denoted by integerinteger.]]></description>
         </property>

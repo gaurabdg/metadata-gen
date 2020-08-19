@@ -13,7 +13,7 @@
         <property name="scope" type="com.puppycrawl.tools.checkstyle.api.Scope" default-value="public">
           <description><![CDATA[specify the visibility scope where Javadoc comments are checked.]]></description>
         </property>
-        <property name="excludeScope" type="com.puppycrawl.tools.checkstyle.api.Scope" default-value="null">
+        <property name="excludeScope" type="com.puppycrawl.tools.checkstyle.api.Scope">
           <description><![CDATA[specify the visibility scope where Javadoc comments are not
  checked.]]></description>
         </property>

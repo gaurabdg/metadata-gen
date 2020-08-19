@@ -25,7 +25,7 @@
  testing for violations will be performed on them.
  </p>]]></description>
       <properties>
-        <property name="fileNamePattern" type="java.util.regex.Pattern" default-value="null">
+        <property name="fileNamePattern" type="java.util.regex.Pattern">
           <description><![CDATA[Define regular expression to match the file name against.]]></description>
         </property>
       </properties>

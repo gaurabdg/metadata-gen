@@ -114,7 +114,7 @@
         <property name="thirdPartyPackageRegExp" type="java.util.regex.Pattern" default-value=".*">
           <description><![CDATA[Specify RegExp for THIRD_PARTY_PACKAGE group imports.]]></description>
         </property>
-        <property name="specialImportsRegExp" type="java.util.regex.Pattern" default-value="^$ (empty)">
+        <property name="specialImportsRegExp" type="java.util.regex.Pattern" default-value="^$">
           <description><![CDATA[Specify RegExp for SPECIAL_IMPORTS group imports.]]></description>
         </property>
         <property name="separateLineBetweenGroups" type="boolean" default-value="true">

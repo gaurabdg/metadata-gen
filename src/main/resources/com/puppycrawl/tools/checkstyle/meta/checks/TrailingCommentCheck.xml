@@ -59,7 +59,7 @@
         <property name="format" type="java.util.regex.Pattern" default-value="">
           <description><![CDATA[Specify pattern for strings allowed before the comment.]]></description>
         </property>
-        <property name="legalComment" type="java.util.regex.Pattern" default-value="null">
+        <property name="legalComment" type="java.util.regex.Pattern">
           <description><![CDATA[Define pattern for text allowed in trailing comments.
  (This pattern will not be applied to multiline comments and the text of
  the comment will be trimmed before matching.)]]></description>

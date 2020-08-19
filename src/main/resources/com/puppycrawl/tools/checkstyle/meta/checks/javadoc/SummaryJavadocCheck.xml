@@ -16,7 +16,7 @@
  if the Javadoc being examined by this check violates the tight html rules defined at
  <a href="https://checkstyle.org/writingjavadocchecks.html#TightHTML_rules">TightHTML Rules</a>.]]></description>
         </property>
-        <property name="forbiddenSummaryFragments" type="java.util.regex.Pattern" default-value="^$ (empty)">
+        <property name="forbiddenSummaryFragments" type="java.util.regex.Pattern" default-value="^$">
           <description><![CDATA[Specify the regexp for forbidden summary fragments.]]></description>
         </property>
         <property name="period" type="java.lang.String" default-value=".">

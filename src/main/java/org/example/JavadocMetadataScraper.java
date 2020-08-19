@@ -174,7 +174,11 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
             modulePropertyDetails.setValidationType(getTagTextFromProperty(nodeLi,
                     validationTypeNode));
         }
-        modulePropertyDetails.setDefaultValue(getPropertyDefaultText(nodeLi));
+        final String defaultValue = getPropertyDefaultText(nodeLi);
+        if (!"null".equals(defaultValue)
+            && !"the charset property of the parent".equals(defaultValue)) {
+            modulePropertyDetails.setDefaultValue(defaultValue);
+        }
         return modulePropertyDetails;
     }
 
